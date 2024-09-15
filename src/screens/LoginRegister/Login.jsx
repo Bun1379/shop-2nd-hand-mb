@@ -29,7 +29,7 @@ function Login({ navigation }) {
                 }
                 else {
                     Alert.alert('Thông báo', 'Đăng nhập thành công!');
-                    navigation.navigate('UserProfile');
+                    navigation.navigate('Home');
                 }
             } else {
                 Alert.alert('Đăng nhập thất bại', response.data.message);
