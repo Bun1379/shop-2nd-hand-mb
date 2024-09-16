@@ -61,11 +61,7 @@ const Search = ({ navigation, route }) => {
           renderItem={({ item }) => {
             return (
               <Item
-                imageUrl={
-                  "https://th.bing.com/th/id/OIP.pRbr2XV7L1NEwYpS5noJEQHaHa?rs=1&pid=ImgDetMain"
-                }
-                name={item.productName}
-                price={item.price}
+                product={item}
               />
             );
           }}

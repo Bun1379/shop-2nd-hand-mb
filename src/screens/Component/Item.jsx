@@ -1,56 +1,29 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
-const Item = ({ imageUrl, name, price }) => {
+const Item = ({ product }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('ProductDetail', { product });
+  };
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: imageUrl }} style={styles.image} />
-      <View style={styles.content}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.price}>{price} VND</Text>
+    <TouchableOpacity className="w-[47%] bg-white border border-gray-300 rounded-lg mb-5 shadow-md" onPress={handlePress}>
+      {/* Hình ảnh sản phẩm */}
+      <Image
+        source={{ uri: "https://th.bing.com/th/id/OIP.pRbr2XV7L1NEwYpS5noJEQHaHa?rs=1&pid=ImgDetMain" }}
+        className="w-full h-44 rounded-t-lg"
+        resizeMode="cover"
+      />
+      <View className="p-3">
+        {/* Tên sản phẩm */}
+        <Text className="text-lg font-bold text-gray-800">{product.productName}</Text>
+        {/* Giá sản phẩm */}
+        <Text className="text-sm text-right text-gray-500 mt-1">{product.price} VND</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "47%",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    // padding: 10,
-    backgroundColor: "#fff",
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  image: {
-    width: "100%",
-    height: 150,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  content: {
-    paddingRight: 10,
-    paddingLeft: 10,
-    paddingBottom: 10,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginTop: 10,
-    color: "#333",
-  },
-  price: {
-    fontSize: 14,
-    color: "#888",
-    marginTop: 5,
-    textAlign: "right",
-  },
-});
 
 export default Item;
