@@ -10,7 +10,6 @@ import ResetPW from "./src/screens/LoginRegister/ResetPW";
 import VerifyUser from "./src/screens/LoginRegister/VerifyUser";
 import Navigation from "./src/screens/Home/Navigation";
 import Search from "./src/screens/Home/Search";
-import Header from "./src/screens/Component/Header";
 const Stack = createNativeStackNavigator();
 function App() {
   return (

@@ -43,13 +43,13 @@ const Search = ({ navigation, route }) => {
       <View className="flex-row justify-around bg-gray-100 rounded-lg shadow-md w-full">
         <TouchableOpacity
           onPress={() => handleButtonNew()}
-          className="p-3 border border-gray-300  bg-white shadow-sm hover:shadow-lg w-6/12 justify-center items-center"
+          className="p-3 bg-white shadow-sm hover:shadow-lg w-6/12 justify-center items-center border-r"
         >
-          <Text className="text-lg font-semibold text-gray-700">Mới</Text>
+          <Text className="text-lg font-semibold text-gray-700 ">Mới</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleButtonPrice()}
-          className="p-3 border border-gray-300  bg-white shadow-sm hover:shadow-lg w-6/12 justify-center items-center"
+          className="p-3 bg-white shadow-sm hover:shadow-lg w-6/12 justify-center items-center"
         >
           <Text className="text-lg font-semibold text-gray-700">Giá cả</Text>
         </TouchableOpacity>
