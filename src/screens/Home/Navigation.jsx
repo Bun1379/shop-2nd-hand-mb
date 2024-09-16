@@ -7,7 +7,7 @@ import UserProfile from "../User/UserProfile";
 import Home from "./Home";
 import Header from "../Component/Header";
 
-function Navigation() {
+function Navigation({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -34,7 +34,7 @@ function Navigation() {
         name="Home"
         component={Home}
         options={{
-          headerTitle: () => <Header />,
+          headerTitle: () => <Header navigation={navigation} />,
           headerTitleContainerStyle: {
             width: "100%",
           },

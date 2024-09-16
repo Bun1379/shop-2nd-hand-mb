@@ -9,6 +9,8 @@ import ForgotPW from "./src/screens/LoginRegister/ForgotPW";
 import ResetPW from "./src/screens/LoginRegister/ResetPW";
 import VerifyUser from "./src/screens/LoginRegister/VerifyUser";
 import Navigation from "./src/screens/Home/Navigation";
+import Search from "./src/screens/Home/Search";
+import Header from "./src/screens/Component/Header";
 const Stack = createNativeStackNavigator();
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
           component={Navigation}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Search" component={Search} />
       </Stack.Navigator>
     </NavigationContainer>
   );

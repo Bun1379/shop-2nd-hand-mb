@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Icon, SearchBar } from "react-native-elements";
@@ -7,7 +8,10 @@ const Header = ({ navigation }) => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    // onSearch(query); // Gửi query về cho component cha
+  };
+
+  const handleSearchSubmit = () => {
+    navigation.navigate("Search", { searchQuery });
   };
 
   return (
@@ -16,6 +20,7 @@ const Header = ({ navigation }) => {
         placeholder="Search..."
         onChangeText={handleSearch}
         value={searchQuery}
+        onSubmitEditing={handleSearchSubmit}
         containerStyle={{
           backgroundColor: "transparent",
           borderBottomColor: "transparent",
