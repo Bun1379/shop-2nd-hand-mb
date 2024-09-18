@@ -11,6 +11,7 @@ import VerifyUser from "./src/screens/LoginRegister/VerifyUser";
 import Navigation from "./src/screens/Home/Navigation";
 import Search from "./src/screens/Home/Search";
 import ProductDetail from "./src/screens/Home/ProductDetail";
+import UpdateUser from "./src/screens/User/UpdateUser";
 const Stack = createNativeStackNavigator();
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         />
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
+        <Stack.Screen name="UpdateUser" component={UpdateUser} />
       </Stack.Navigator>
     </NavigationContainer>
   );

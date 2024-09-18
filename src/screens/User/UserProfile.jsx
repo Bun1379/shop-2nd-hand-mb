@@ -1,36 +1,30 @@
-import { useEffect, useState } from 'react';
-import { Text, View, Image } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function UserProfile({ navigation }) {
     const [userInfo, setUserInfo] = useState({ username: '', email: '', gender: '', address: '', phone: '' });
 
-    // Sử dụng useEffect với dependency array để gọi khi component mount
-    useEffect(() => {
-        const getUserData = async () => {
-            try {
-                const user = await AsyncStorage.getItem("user");
-                if (user !== null) {
-                    const parsedUser = JSON.parse(user);
-                    const { username, email, gender, address, phone } = parsedUser;
-                    setUserInfo({ username, email, gender, address, phone });
-                }
-            } catch (error) {
-                console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
+    // Function to fetch user data from AsyncStorage
+    const getUserData = async () => {
+        try {
+            const user = await AsyncStorage.getItem("user");
+            if (user !== null) {
+                const parsedUser = JSON.parse(user);
+                setUserInfo(parsedUser);  // Update the entire userInfo object
             }
-        };
+        } catch (error) {
+            console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
+        }
+    };
 
-        getUserData();
-    }, []); // Chỉ chạy khi component mount
+    // Use useEffect to fetch data when component mounts and when screen is focused
+    useEffect(() => {
+        const focusListener = navigation.addListener('focus', getUserData);
 
-    // Mảng lưu chi tiết người dùng để hiển thị qua map
-    const userDetails = [
-        { label: "Tên", value: userInfo.username },
-        { label: "Email", value: userInfo.email },
-        { label: "Giới tính", value: userInfo.gender },
-        { label: "Điện thoại", value: userInfo.phone },
-        { label: "Địa chỉ", value: userInfo.address }
-    ];
+        // Cleanup listener automatically handled by returning this cleanup function
+        return focusListener;
+    }, [navigation]);
 
     return (
         <View className="flex-1 justify-center items-center bg-[#F2F7FF] px-10">
@@ -45,13 +39,31 @@ function UserProfile({ navigation }) {
                     Thông tin cá nhân
                 </Text>
                 <View className="space-y-3">
-                    {userDetails.map((detail, index) => (
-                        <View key={index} className="flex-row justify-between">
-                            <Text className="text-lg font-medium text-gray-600">{detail.label}:</Text>
-                            <Text className="text-lg text-gray-800">{detail.value}</Text>
-                        </View>
-                    ))}
+                    <View className="flex-row justify-between">
+                        <Text className="text-lg font-medium text-gray-600">Tên:</Text>
+                        <Text className="text-lg text-gray-800">{userInfo.username}</Text>
+                    </View>
+                    <View className="flex-row justify-between">
+                        <Text className="text-lg font-medium text-gray-600">Email:</Text>
+                        <Text className="text-lg text-gray-800">{userInfo.email}</Text>
+                    </View>
+                    <View className="flex-row justify-between">
+                        <Text className="text-lg font-medium text-gray-600">Giới tính:</Text>
+                        <Text className="text-lg text-gray-800">{userInfo.gender}</Text>
+                    </View>
+                    <View className="flex-row justify-between">
+                        <Text className="text-lg font-medium text-gray-600">Điện thoại:</Text>
+                        <Text className="text-lg text-gray-800">{userInfo.phone}</Text>
+                    </View>
+                    <View className="flex-row justify-between">
+                        <Text className="text-lg font-medium text-gray-600">Địa chỉ:</Text>
+                        <Text className="text-lg text-gray-800">{userInfo.address}</Text>
+                    </View>
                 </View>
+                <TouchableOpacity className="bg-blue-500 p-3 rounded mt-6"
+                    onPress={() => navigation.navigate('UpdateUser', { userInfo })}>
+                    <Text className="text-lg text-white text-center">Cập nhật</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
