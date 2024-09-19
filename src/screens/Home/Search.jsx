@@ -19,7 +19,7 @@ const Search = ({ navigation, route }) => {
         sortOrder,
       });
       const { data } = response;
-      setArrayProducts(data.DT);
+      setArrayProducts(data.DT.products);
     } catch (error) {
       console.error("Chi tiết lỗi:", error.message);
     }

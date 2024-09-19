@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button, Alert } from "react-native";
 import UserAPI from "../../API/UserAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -35,7 +35,16 @@ const UpdateUser = ({ route, navigation }) => {
                 );
 
                 Alert.alert("Thông báo", response.data.EM);
-                await AsyncStorage.setItem("user", JSON.stringify(formData));
+
+                // Cập nhật dữ liệu người dùng trong AsyncStorage chỉ với các trường được cập nhật
+                const existingUserData = await AsyncStorage.getItem("user");
+                const updatedUser = {
+                    ...JSON.parse(existingUserData),
+                    ...formData, // Ghi đè các trường được cập nhật
+                };
+                await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
+
+                // Sau khi cập nhật, điều hướng về trang trước
                 navigation.goBack();
             }
         } catch (error) {
@@ -45,6 +54,17 @@ const UpdateUser = ({ route, navigation }) => {
             setLoading(false);
         }
     };
+
+    // Thêm listener cho sự kiện focus khi màn hình quay lại
+    useEffect(() => {
+        const focusListener = navigation.addListener('focus', () => {
+            // Khi quay lại trang trước, trang đó sẽ được cập nhật thông tin
+        });
+
+        return () => {
+            focusListener(); // Cleanup listener khi component unmount
+        };
+    }, [navigation]);
 
     return (
         <View className="flex-1 p-4 bg-gray-100">
