@@ -2,13 +2,21 @@ import React, { useState } from "react";
 import { View, Text, Image, ScrollView, Modal } from "react-native";
 import ProductFooter from "../Component/ProductFooter";
 import ModalAddProduct from "../Component/ModalAddProduct";
+import CartAPI from "../../API/CartAPI";
 
 const ProductDetail = ({ route }) => {
   const { product } = route.params; // Nhận dữ liệu từ navigation
   const [modalVisible, setModalVisible] = useState(false);
   const [quantity, setQuantity] = useState("1");
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     console.log(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`);
+    let rs = await CartAPI.UpdateQuantity({
+      productId: product._id,
+      quantity: parseInt(quantity),
+    });
+    if (rs.status === 200) {
+      alert("Thêm vào giỏ hàng thành công");
+    }
     setModalVisible(false); // Đóng modal sau khi xác nhận
   };
   const onAddToCart = () => {

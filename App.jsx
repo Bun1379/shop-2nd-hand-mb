@@ -13,6 +13,7 @@ import Search from "./src/screens/Home/Search";
 import ProductDetail from "./src/screens/Home/ProductDetail";
 import UpdateUser from "./src/screens/User/UpdateUser";
 import Header from "./src/screens/Component/Header";
+import Cart from "./src/screens/Home/Cart";
 const Stack = createNativeStackNavigator();
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="UpdateUser" component={UpdateUser} />
+        <Stack.Screen name="Cart" component={Cart} />
       </Stack.Navigator>
     </NavigationContainer>
   );

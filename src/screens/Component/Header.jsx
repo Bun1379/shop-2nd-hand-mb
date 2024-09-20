@@ -65,7 +65,7 @@ const Header = ({}) => {
       />
       {!isSearch && (
         <TouchableOpacity
-          onPress={() => console.log("Go to cart")}
+          onPress={() => navigation.navigate("Cart")}
           className="justify-center flex-1"
           activeOpacity={0.7}
         >
