@@ -10,7 +10,7 @@ const Search = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchDataProducts();
-  }, [sortOrder]);
+  }, [sortOrder, searchQuery]);
 
   const fetchDataProducts = async () => {
     try {
@@ -59,16 +59,16 @@ const Search = ({ navigation, route }) => {
           key={`numColumns-2`}
           data={arrayProducts}
           renderItem={({ item }) => {
-            return (
-              <Item
-                product={item}
-              />
-            );
+            return <Item product={item} />;
           }}
           numColumns={2}
           keyExtractor={(item) => item._id + ""}
           columnWrapperStyle={{ justifyContent: "space-between" }}
-          contentContainerStyle={{ padding: 10, flexGrow: 1 }}
+          contentContainerStyle={{
+            padding: 10,
+            flexGrow: 1,
+            paddingBottom: 40,
+          }}
         />
       )}
     </View>

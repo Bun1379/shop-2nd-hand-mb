@@ -12,6 +12,7 @@ import Navigation from "./src/screens/Home/Navigation";
 import Search from "./src/screens/Home/Search";
 import ProductDetail from "./src/screens/Home/ProductDetail";
 import UpdateUser from "./src/screens/User/UpdateUser";
+import Header from "./src/screens/Component/Header";
 const Stack = createNativeStackNavigator();
 function App() {
   return (
@@ -28,7 +29,16 @@ function App() {
           component={Navigation}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Search" component={Search} />
+        <Stack.Screen
+          name="Search"
+          component={Search}
+          options={{
+            header: () => <Header />,
+            headerTitleContainerStyle: {
+              width: "100%",
+            },
+          }}
+        />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="UpdateUser" component={UpdateUser} />
       </Stack.Navigator>
