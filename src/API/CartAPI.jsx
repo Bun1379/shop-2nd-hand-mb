@@ -8,7 +8,6 @@ class CartAPI {
 
   static async UpdateQuantity(data) {
     const url = `/cart`;
-    console.log(data);
     return axiosPrivate.put(url, data);
   }
 }
