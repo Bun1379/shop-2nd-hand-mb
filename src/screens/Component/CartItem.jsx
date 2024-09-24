@@ -12,6 +12,7 @@ const CartItem = React.memo(
     selected,
     onCheckbox,
     handleUpdateCart,
+    maxQuantity,
   }) => {
     const [quantity, setQuantity] = useState(initialQuantity);
     const [isChecked, setIsChecked] = useState(selected);
@@ -35,11 +36,15 @@ const CartItem = React.memo(
 
     const handleQuantityChange = (newQuantity) => {
       const validQuantity = Math.max(1, newQuantity);
+      if (maxQuantity && validQuantity > maxQuantity) {
+        alert(`Số lượng tối đa là ${maxQuantity}`);
+        return;
+      }
       updateQuantity(validQuantity);
     };
 
     useEffect(() => {
-      setTotalPrice(price * quantity); // Tính giá mới dựa trên số lượng
+      setTotalPrice(price * quantity);
     }, [quantity]);
 
     return (
@@ -77,7 +82,11 @@ const CartItem = React.memo(
                 value={quantity.toString()}
                 onChangeText={(value) => {
                   const newQuantity = parseInt(value);
-                  if (!isNaN(newQuantity) && newQuantity >= 1) {
+                  if (
+                    !isNaN(newQuantity) &&
+                    newQuantity >= 1 &&
+                    newQuantity <= maxQuantity
+                  ) {
                     setQuantity(newQuantity);
                   } else {
                     setQuantity(1);
