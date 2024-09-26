@@ -6,20 +6,36 @@ import OrderItem from "./OrderItem";
 
 const Order = ({ route }) => {
   const { initStatus } = route.params;
+
   const [listOrder, setListOrder] = useState([]);
   const [status, setStatus] = useState(initStatus);
+  const [totalOrder, setTotalOrder] = useState([]);
+
   const fetchDataOrder = async () => {
     try {
       const response = await OrderAPI.GetOrders();
       const listOrder = response.data.DT;
-      setListOrder(listOrder.filter((order) => order.status === status));
+      setTotalOrder(listOrder);
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  const filterOrder = () => {
+    console.log("Filter order");
+    setListOrder(totalOrder.filter((order) => order.status === status));
+  };
+
   useEffect(() => {
     fetchDataOrder();
-  }, [status]);
+  }, []);
+
+  useEffect(() => {
+    if (totalOrder.length > 0) {
+      filterOrder();
+    }
+  }, [status, totalOrder]);
+
   return (
     <View>
       <OrderStatusBar status={status} setStatus={setStatus} />

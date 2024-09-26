@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 const OrderItem = ({ order }) => {
   return (
-    <View className="border border-gray-300 rounded-lg p-4 mb-4 bg-white">
+    <View className="border border-gray-300 rounded-lg p-4 mb-2 bg-white">
       <Text className="text-lg font-bold text-gray-800">
         Mã đơn hàng: {order._id}
       </Text>
