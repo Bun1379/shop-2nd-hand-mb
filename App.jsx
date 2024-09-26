@@ -15,6 +15,7 @@ import UpdateUser from "./src/screens/User/UpdateUser";
 import Header from "./src/screens/Component/Header";
 import Cart from "./src/screens/Home/Cart";
 import Checkout from "./src/screens/Checkout/Checkout";
+import Order from "./src/screens/Order/Order";
 const Stack = createNativeStackNavigator();
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Stack.Screen name="UpdateUser" component={UpdateUser} />
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="Order" component={Order} />
       </Stack.Navigator>
     </NavigationContainer>
   );

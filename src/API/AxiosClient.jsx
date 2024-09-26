@@ -4,7 +4,7 @@ import { Alert } from "react-native"; // Để hiển thị cảnh báo
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@env";
 
-const BASE_URL = `${API_URL}:3000/api/v1`; // Đổi địa chỉ IP cho phù hợp
+const BASE_URL = `http://192.168.2.121:3000/api/v1`; // Đổi địa chỉ IP cho phù hợp
 // Tạo axios client chung
 const axiosClient = axios.create({
   baseURL: BASE_URL,
