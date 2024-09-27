@@ -10,16 +10,6 @@ class OrderAPI {
     const url = "/order";
     return axiosPrivate.post(url, data);
   }
-
-  //   static async UpdateOrder(data) {
-  //     const url = `/order`;
-  //     return axiosPrivate.put(url, data);
-  //   }
-
-  //   static async DeleteOrder(data) {
-  //     const url = `/order`;
-  //     return axiosPrivate.delete(url, { data });
-  //   }
 }
 
 export default OrderAPI;

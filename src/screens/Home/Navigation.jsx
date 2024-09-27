@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import UserProfile from "../User/UserProfile";
+import UserScreen from "../User/UserScreen";
 import Home from "./Home";
 import Header from "../Component/Header";
 
@@ -19,7 +19,7 @@ function Navigation({ navigation }) {
             iconName = "home";
             // } else if (route.name === 'Notifications') {
             //     iconName = 'bell';
-          } else if (route.name === "UserProfile") {
+          } else if (route.name === "Trang cá nhân") {
             iconName = "user";
           }
 
@@ -41,7 +41,7 @@ function Navigation({ navigation }) {
         }}
       />
       {/* <Tab.Screen name="Notifications" component={Notifications} /> */}
-      <Tab.Screen name="UserProfile" component={UserProfile} />
+      <Tab.Screen name="Trang cá nhân" component={UserScreen} />
     </Tab.Navigator>
   );
 }

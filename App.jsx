@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+
 import React from "react";
 import UserProfile from "./src/screens/User/UserProfile";
 import Login from "./src/screens/LoginRegister/Login";
@@ -15,6 +15,8 @@ import UpdateUser from "./src/screens/User/UpdateUser";
 import Header from "./src/screens/Component/Header";
 import Cart from "./src/screens/Home/Cart";
 import Checkout from "./src/screens/Checkout/Checkout";
+import OrderStartusScreen from "./src/screens/User/Order/OrderStatusScreen";
+
 const Stack = createNativeStackNavigator();
 function App() {
   return (
@@ -45,6 +47,7 @@ function App() {
         <Stack.Screen name="UpdateUser" component={UpdateUser} />
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="Đơn hàng của tôi" component={OrderStartusScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
