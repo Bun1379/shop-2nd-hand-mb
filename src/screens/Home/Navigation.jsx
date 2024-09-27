@@ -6,6 +6,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import UserScreen from "../User/UserScreen";
 import Home from "./Home";
 import Header from "../Component/Header";
+import Chat from "../Chat/Chat";
 
 function Navigation({ navigation }) {
   return (
@@ -19,6 +20,8 @@ function Navigation({ navigation }) {
             iconName = "home";
             // } else if (route.name === 'Notifications') {
             //     iconName = 'bell';
+          } else if (route.name === "Chat") {
+            iconName = "comments";
           } else if (route.name === "Trang cá nhân") {
             iconName = "user";
           }
@@ -40,7 +43,7 @@ function Navigation({ navigation }) {
           },
         }}
       />
-      {/* <Tab.Screen name="Notifications" component={Notifications} /> */}
+      <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen name="Trang cá nhân" component={UserScreen} />
     </Tab.Navigator>
   );

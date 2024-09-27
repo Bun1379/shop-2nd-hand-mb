@@ -1,12 +1,13 @@
 import { FlatList, Text, View, TextInput, TouchableOpacity, Modal } from "react-native";
 import CheckoutItem from "./CheckoutItem";
 import { useEffect, useState } from "react";
-import UserAPI from "../../API/UserAPI";
+import { useNavigation } from '@react-navigation/native';
 import CartFooter from "../Component/CartFooter";
 import OrderAPI from "../../API/OrderAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Checkout = ({ route }) => {
+  const navigation = useNavigation();
   const { items } = route.params;
   const [userInfo, setUserInfo] = useState({
     username: '',
@@ -43,6 +44,7 @@ const Checkout = ({ route }) => {
     try {
       await OrderAPI.CreateOrder(data);
       alert("Mua hàng thành công");
+      navigation.navigate("Order", { initStatus: "PENDING" });
     } catch (error) {
       console.log(error.response?.data || "API error");
       alert(error.response?.data?.EM);

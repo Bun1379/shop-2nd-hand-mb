@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import UserAPI from "../../API/UserAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -48,8 +48,7 @@ const UpdateUser = ({ route, navigation }) => {
                 navigation.goBack();
             }
         } catch (error) {
-            console.log('Error updating user data:', error);
-            Alert.alert("Error", "Something went wrong.");
+            Alert.alert("Lỗi:", error.message);
         } finally {
             setLoading(false);
         }
@@ -68,8 +67,6 @@ const UpdateUser = ({ route, navigation }) => {
 
     return (
         <View className="flex-1 p-4 bg-gray-100">
-            <Text className="text-2xl font-bold mb-4">Cập nhật thông tin</Text>
-
             <TextInput
                 className="border border-gray-300 rounded-md p-3 mb-4"
                 placeholder="Username"
@@ -99,11 +96,12 @@ const UpdateUser = ({ route, navigation }) => {
                 onChangeText={(value) => handleInputChange("address", value)}
             />
 
-            <Button
-                title={loading ? "Updating..." : "Update"}
+            <TouchableOpacity
+                className="bg-primary p-3 rounded "
                 onPress={handleSubmit}
-                disabled={loading}
-            />
+            >
+                <Text className="text-lg text-white text-center">Cập nhật</Text>
+            </TouchableOpacity>
         </View>
     );
 };

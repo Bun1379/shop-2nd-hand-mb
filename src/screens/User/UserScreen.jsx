@@ -36,11 +36,12 @@ const UserPage = () => {
             {/* Cài đặt tài khoản */}
             <View className="mt-4 bg-white">
                 <TouchableOpacity className="p-4 border-b border-gray-200"
-                    onPress={() => navigation.navigate('Đơn hàng của tôi')}>
-                    <Text className="text-base text-primary" >Đơn hàng của tôi</Text>
+                    onPress={() => navigation.navigate("Order", { initStatus: "PENDING" })}>
+                    <Text className="text-base text-primary">Đơn hàng của tôi</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="p-4 border-b border-gray-200">
-                    <Text className="text-base text-primary">Cài đặt tài khoản</Text>
+                <TouchableOpacity className="p-4 border-b border-gray-200"
+                    onPress={() => navigation.navigate("Thông tin cá nhân")}>
+                    <Text className="text-base text-primary">Thông tin cá nhân</Text>
                 </TouchableOpacity>
                 <TouchableOpacity className="p-4 border-b border-gray-200">
                     <Text className="text-base text-primary">Trung tâm hỗ trợ</Text>
