@@ -18,23 +18,25 @@ const OrderStatusBar = ({ status, setStatus }) => {
       {statusList.map((item) => (
         <TouchableOpacity
           key={item}
-          className={`px-4 py-2 mx-2 ${status === item ? "border-b-2 border-primary" : ""
-            }`}
+          className={`px-4 py-2 mx-2 ${
+            status === item ? "border-b-2 border-primary" : ""
+          }`}
           onPress={() => setStatus(item)}
         >
           <Text
-            className={`${status === item ? "text-primary" : "text-black"
-              } text-lg`}
+            className={`${
+              status === item ? "text-primary" : "text-black"
+            } text-lg`}
           >
             {item === "PENDING"
               ? "Đang xử lý"
               : item === "CONFIRMED"
-                ? "Đã xác nhận"
-                : item === "SHIPPED"
-                  ? "Đã vận chuyển"
-                  : item === "DELIVERED"
-                    ? "Đã giao hàng"
-                    : "Đã hủy"}
+              ? "Đã xác nhận"
+              : item === "SHIPPED"
+              ? "Đã vận chuyển"
+              : item === "DELIVERED"
+              ? "Đã giao hàng"
+              : "Đã hủy"}
           </Text>
         </TouchableOpacity>
       ))}
