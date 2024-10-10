@@ -9,6 +9,7 @@ const CartItem = React.memo(
     productName,
     initialQuantity,
     price,
+    image,
     selected,
     onCheckbox,
     handleUpdateCart,
@@ -58,7 +59,7 @@ const CartItem = React.memo(
           />
           <Image
             source={{
-              uri: "https://th.bing.com/th/id/OIP.pRbr2XV7L1NEwYpS5noJEQHaHa?rs=1&pid=ImgDetMain",
+              uri: image,
             }}
             className="w-24 h-24 rounded-lg"
             resizeMode="cover"

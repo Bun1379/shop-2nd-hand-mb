@@ -16,7 +16,7 @@ const Item = ({ product }) => {
       {/* Hình ảnh sản phẩm */}
       <Image
         source={{
-          uri: "https://th.bing.com/th/id/OIP.pRbr2XV7L1NEwYpS5noJEQHaHa?rs=1&pid=ImgDetMain",
+          uri: product.images[0],
         }}
         className="w-full h-44 rounded-t-lg"
         resizeMode="cover"

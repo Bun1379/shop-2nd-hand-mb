@@ -6,6 +6,7 @@ import CartAPI from "../../API/CartAPI";
 
 const ProductDetail = ({ route }) => {
   const { product } = route.params; // Nhận dữ liệu từ navigation
+  console.log(product);
   const [modalVisible, setModalVisible] = useState(false);
   const [quantity, setQuantity] = useState("1");
   const handleConfirm = async () => {

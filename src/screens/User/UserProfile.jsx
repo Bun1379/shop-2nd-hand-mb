@@ -9,9 +9,8 @@ function UserProfile({ navigation }) {
     gender: "",
     address: "",
     phone: "",
+    image: "",
   });
-
-  // Function to fetch user data from AsyncStorage
   const getUserData = async () => {
     try {
       const user = await AsyncStorage.getItem("user");
@@ -24,11 +23,9 @@ function UserProfile({ navigation }) {
     }
   };
 
-  // Use useEffect to fetch data when component mounts and when screen is focused
   useEffect(() => {
     const focusListener = navigation.addListener("focus", getUserData);
 
-    // Cleanup listener automatically handled by returning this cleanup function
     return focusListener;
   }, [navigation]);
 
@@ -36,7 +33,9 @@ function UserProfile({ navigation }) {
     <View className="flex-1 justify-center items-center bg-[#F2F7FF] px-10">
       <View className="justify-center items-center p-5 w-40 h-40 bg-white shadow-lg rounded-full mb-6">
         <Image
-          source={require("../../../assets/edit.jpg")}
+          source={{
+            uri: userInfo.image ? userInfo.image : 'https://via.placeholder.com/150'
+          }}
           style={{ width: 160, height: 160, borderRadius: 80 }}
         />
       </View>

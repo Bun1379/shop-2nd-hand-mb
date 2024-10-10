@@ -5,14 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 
 const UserPage = () => {
     const navigation = useNavigation();
-    const [userInfo, setUserInfo] = useState({ username: '', email: '', gender: '', address: '', phone: '' });
+    const [userInfo, setUserInfo] = useState({ username: '', email: '', gender: '', address: '', phone: '', image: '' });
 
     const getUserData = async () => {
         try {
             const user = await AsyncStorage.getItem("user");
             if (user !== null) {
                 const parsedUser = JSON.parse(user);
-                setUserInfo(parsedUser);  // Update the entire userInfo object
+                setUserInfo(parsedUser);
             }
         } catch (error) {
             console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
@@ -24,7 +24,9 @@ const UserPage = () => {
             {/* Thông tin người dùng */}
             <View className="bg-white p-4 flex-row items-center">
                 <Image
-                    source={{ uri: 'https://via.placeholder.com/100' }} // Thay bằng ảnh người dùng thực tế
+                    source={{
+                        uri: userInfo.image ? userInfo.image : 'https://via.placeholder.com/150'
+                    }}
                     className="w-16 h-16 rounded-full"
                 />
                 <View className="ml-4">

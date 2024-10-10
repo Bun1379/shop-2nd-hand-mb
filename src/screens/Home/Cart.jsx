@@ -37,10 +37,10 @@ const Cart = () => {
     const newCart = cart.map((item) =>
       item.product._id === productId
         ? {
-            ...item,
-            quantity: newQuantity,
-            price: item.product.price * newQuantity,
-          }
+          ...item,
+          quantity: newQuantity,
+          price: item.product.price * newQuantity,
+        }
         : item
     );
     setCart(newCart);
@@ -75,6 +75,7 @@ const Cart = () => {
             productId={item.product._id}
             productName={item.product.productName}
             initialQuantity={item.quantity}
+            image={item.product.images[0]}
             price={item.product.price}
             maxQuantity={item.product.quantity}
             selected={item.selected}

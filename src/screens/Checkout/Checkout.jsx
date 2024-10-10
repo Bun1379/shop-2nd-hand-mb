@@ -29,16 +29,17 @@ const Checkout = ({ route }) => {
     }
   };
 
-  const handleCheckout = async (selectedPaymentMethod) => {
+  const handleCheckout = async (selectedPaymentMethod, discountCode, totalDiscount) => {
     const data = {
       products: items.map((item) => ({
         productId: item.product._id,
         quantity: item.quantity,
       })),
-      totalAmount: total,
+      totalAmount: totalDiscount,
       address: userInfo.address,
       phone: userInfo.phone,
       name: userInfo.username,
+      discountCode: discountCode,
       paymentMethod: selectedPaymentMethod,
     };
     try {
@@ -65,25 +66,26 @@ const Checkout = ({ route }) => {
 
   return (
     <View className="flex-1">
-      <View className="h-40 bg-slate-200 p-4">
-        <View className="flex-row justify-between items-center">
-          <Text className="text-xl font-bold">Thông tin người nhận: </Text>
-          <TouchableOpacity onPress={() => setIsModalVisible(true)}>
-            <Text className="text-blue-500">Thay đổi</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <Text>Tên: {userInfo.username}</Text>
-          <Text>SĐT: {userInfo.phone}</Text>
-          <Text>Địa chỉ: {userInfo.address}</Text>
-        </View>
-      </View>
-
       <FlatList
         data={items}
         keyExtractor={(item) => item.product._id}
         renderItem={({ item }) => <CheckoutItem item={item} />}
         contentContainerStyle={{ paddingBottom: 80 }}
+        ListHeaderComponent={(
+          <View className="h-40 bg-slate-200 p-4">
+            <View className="flex-row justify-between items-center">
+              <Text className="text-xl font-bold">Thông tin người nhận: </Text>
+              <TouchableOpacity onPress={() => setIsModalVisible(true)}>
+                <Text className="text-blue-500">Thay đổi</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text>Tên: {userInfo.username}</Text>
+              <Text>SĐT: {userInfo.phone}</Text>
+              <Text>Địa chỉ: {userInfo.address}</Text>
+            </View>
+          </View>
+        )}
       />
 
       <CartFooter total={total} onCheckout={handleCheckout} />

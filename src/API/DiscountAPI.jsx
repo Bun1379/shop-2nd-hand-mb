@@ -1,7 +1,7 @@
 import { axiosClient, axiosPrivate } from "./AxiosClient";
 
 class DiscountAPI {
-  static async getDiscountPercentages(coupon) {
+  static async getDiscountByCode(coupon) {
     const url = "/discount/code";
     return axiosPrivate.get(url, { params: { discountCode: coupon } });
   }

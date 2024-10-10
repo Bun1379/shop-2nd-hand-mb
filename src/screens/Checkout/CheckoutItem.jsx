@@ -9,7 +9,9 @@ const CheckoutItem = ({ item }) => {
         <View className="flex-row mb-4">
           <Image
             src={
-              "https://th.bing.com/th?q=SK+Telecom+T1&w=120&h=120&c=1&rs=1&qlt=90&cb=1&dpr=1.3&pid=InlineBlock&mkt=en-US&cc=US&setlang=en&adlt=moderate&t=1&mw=247"
+              item.product.images.length > 0
+                ? item.product.images[0]
+                : "https://via.placeholder.com/150"
             }
             className="w-20 h-20 rounded-md mr-4"
           />
