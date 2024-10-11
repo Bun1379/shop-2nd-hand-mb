@@ -1,4 +1,3 @@
-
 import React from "react";
 import UserProfile from "./src/screens/User/UserProfile";
 import Login from "./src/screens/LoginRegister/Login";
@@ -16,6 +15,8 @@ import Header from "./src/screens/Component/Header";
 import Cart from "./src/screens/Home/Cart";
 import Checkout from "./src/screens/Checkout/Checkout";
 import Order from "./src/screens/Order/Order";
+import PurchasedProduct from "./src/screens/Review/PurchasedProduct";
+import AddReview from "./src/screens/Review/AddReview";
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -47,6 +48,8 @@ function App() {
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="Thông tin cá nhân" component={UserProfile} />
         <Stack.Screen name="Cập nhật thông tin" component={UpdateUser} />
+        <Stack.Screen name="Sản phẩm đã mua" component={PurchasedProduct} />
+        <Stack.Screen name="Thêm đánh giá" component={AddReview} />
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen name="Order" component={Order} />

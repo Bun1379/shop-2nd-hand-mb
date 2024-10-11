@@ -21,7 +21,10 @@ const Home = () => {
       const { data } = response;
 
       // Cập nhật sản phẩm, giữ lại các sản phẩm đã tải trước đó
-      setArrayProducts((prevProducts) => [...prevProducts, ...data.DT.products]);
+      setArrayProducts((prevProducts) => [
+        ...prevProducts,
+        ...data.DT.products,
+      ]);
     } catch (error) {
       console.error("Chi tiết lỗi:", error.message);
     }
@@ -41,9 +44,7 @@ const Home = () => {
         <FlatList
           key={`numColumns-2`}
           data={arrayProducts}
-          renderItem={({ item }) => (
-            <Item product={item} />
-          )}
+          renderItem={({ item }) => <Item product={item} />}
           numColumns={2}
           keyExtractor={(item) => item._id + ""}
           columnWrapperStyle={{ justifyContent: "space-between" }}

@@ -26,11 +26,11 @@ const Search = ({ navigation, route }) => {
   };
   const handleButtonPrice = () => {
     if (sortOrder === null) {
-      setSortOrder("asc");
-    } else if (sortOrder === "asc") {
-      setSortOrder("desc");
-    } else if (sortOrder === "desc") {
-      setSortOrder("asc");
+      setSortOrder("1");
+    } else if (sortOrder === "1") {
+      setSortOrder("2");
+    } else if (sortOrder === "2") {
+      setSortOrder("1");
     }
   };
 

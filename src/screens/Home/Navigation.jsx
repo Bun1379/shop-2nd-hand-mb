@@ -7,6 +7,7 @@ import UserScreen from "../User/UserScreen";
 import Home from "./Home";
 import Header from "../Component/Header";
 import Chat from "../Chat/Chat";
+import Notification from "../Notification/Notification";
 
 function Navigation({ navigation }) {
   return (
@@ -24,6 +25,8 @@ function Navigation({ navigation }) {
             iconName = "comments";
           } else if (route.name === "Trang cá nhân") {
             iconName = "user";
+          } else if (route.name === "Notifications") {
+            iconName = "bell";
           }
 
           return <FontAwesome name={iconName} size={size} color={color} />;
@@ -44,6 +47,7 @@ function Navigation({ navigation }) {
         }}
       />
       <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name="Notifications" component={Notification} />
       <Tab.Screen name="Trang cá nhân" component={UserScreen} />
     </Tab.Navigator>
   );

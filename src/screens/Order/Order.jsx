@@ -22,7 +22,6 @@ const Order = ({ route }) => {
   };
 
   const filterOrder = () => {
-    console.log("Filter order");
     setListOrder(totalOrder.filter((order) => order.status === status));
   };
 
@@ -39,7 +38,11 @@ const Order = ({ route }) => {
   return (
     <View>
       <OrderStatusBar status={status} setStatus={setStatus} />
-      {listOrder.length === 0 && <Text className="text-center mt-4 text-primary">Không có đơn hàng nào</Text>}
+      {listOrder.length === 0 && (
+        <Text className="text-center mt-4 text-primary">
+          Không có đơn hàng nào
+        </Text>
+      )}
       <FlatList
         data={listOrder}
         renderItem={({ item }) => <OrderItem order={item} />}
