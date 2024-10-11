@@ -15,7 +15,6 @@ const Order = ({ route }) => {
     try {
       const response = await OrderAPI.GetOrders();
       const listOrder = response.data.DT;
-      console.log("List order:", listOrder);
       setTotalOrder(listOrder);
     } catch (error) {
       console.error("Error:", error);
