@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, ScrollView, Modal } from "react-native";
+import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import ProductFooter from "../Component/ProductFooter";
 import ModalAddProduct from "../Component/ModalAddProduct";
 import CartAPI from "../../API/CartAPI";
 import Reviews from "../Review/Reviews";
 import ReviewAPI from "../../API/ReviewAPI";
 
-const ProductDetail = ({ route }) => {
+const ProductDetail = ({ route, navigation }) => {
   const { product } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [quantity, setQuantity] = useState("1");
   const [reviews, setReviews] = useState([]);
+  const [viewedProducts, setViewedProducts] = useState([]);
 
   const handleConfirm = async () => {
     console.log(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`);
@@ -23,12 +25,15 @@ const ProductDetail = ({ route }) => {
     }
     setModalVisible(false); // Đóng modal sau khi xác nhận
   };
+
   const onAddToCart = () => {
     setModalVisible(true);
   };
+
   const onBuyNow = () => {
     console.log("Buy now");
   };
+
   const onChatNow = () => {
     console.log("Chat now");
   };
@@ -43,9 +48,64 @@ const ProductDetail = ({ route }) => {
     }
   };
 
+  const saveViewedProduct = async () => {
+    try {
+      const viewed = await AsyncStorage.getItem("viewedProducts");
+      let viewedArray = viewed ? JSON.parse(viewed) : [];
+
+      if (!viewedArray.some((item) => item._id === product._id)) {
+        viewedArray.push(product);
+
+        if (viewedArray.length > 10) {
+          viewedArray.shift();
+        }
+
+        await AsyncStorage.setItem("viewedProducts", JSON.stringify(viewedArray));
+      }
+
+      setViewedProducts(viewedArray);
+    } catch (error) {
+      console.log("Lỗi khi lưu sản phẩm đã xem:", error);
+    }
+  };
+
+  const fetchViewedProducts = async () => {
+    try {
+      const viewed = await AsyncStorage.getItem("viewedProducts");
+      if (viewed) {
+        setViewedProducts(JSON.parse(viewed));
+      }
+    } catch (error) {
+      console.log("Lỗi khi lấy sản phẩm đã xem:", error);
+    }
+  };
+
   useEffect(() => {
     fetchDataReviews();
-  }, []);
+    saveViewedProduct();
+    fetchViewedProducts();
+  }, [product]);
+
+  const renderViewedProduct = ({ item }) => (
+    <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", { product: item })}>
+      <View className="mr-4">
+        <Image
+          source={{ uri: item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/150' }}
+          className="w-32 h-32 rounded-lg"
+          resizeMode="cover"
+        />
+        <Text
+          className="text-center text-gray-800 mt-2"
+          style={{ width: 128 }}
+          numberOfLines={5}
+          ellipsizeMode="tail"
+        >
+          {item.productName}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <>
       <ScrollView className="p-4 bg-white">
@@ -64,13 +124,33 @@ const ProductDetail = ({ route }) => {
           {product.price} VND
         </Text>
         <Text className="text-base text-gray-600">{product.description}</Text>
-        <Text className="text-lg font-semibold text-gray-800 mb-4 mt-3">
-          Reviews
+
+        <View className="border-t-4 border-primary my-4"></View>
+
+        <Text className="text-lg font-semibold text-gray-800 mb-2">
+          Đánh giá sản phẩm
         </Text>
         {reviews.length === 0 && (
           <Text className="text-base text-gray-600 mt-3">Chưa có đánh giá</Text>
         )}
         <Reviews reviews={reviews} />
+
+        <View className="border-t-4 border-primary my-4"></View>
+
+        {/* Mục Sản phẩm đã xem */}
+        {viewedProducts.length > 0 && (
+          <View className="mt-2 mb-4">
+            <Text className="text-lg font-bold text-gray-800 mb-4">Sản phẩm đã xem</Text>
+            <FlatList
+              data={viewedProducts}
+              renderItem={renderViewedProduct}
+              keyExtractor={(item) => item._id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingVertical: 10 }}
+            />
+          </View>
+        )}
       </ScrollView>
       <ProductFooter onAddToCart={onAddToCart} onBuyNow={onBuyNow} />
       <ModalAddProduct

@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 
 const ProductFooter = ({ onAddToCart, onBuyNow, onChatNow }) => {
   return (
-    <View className="absolute bottom-0 left-0 right-0 flex-row justify-around bg-white shadow-md border-t border-gray-300">
+    <View className="bottom-0 left-0 right-0 flex-row justify-around bg-white shadow-md border-t border-gray-300">
       <TouchableOpacity
         className="flex-[0.3] p-3 rounded-lg flex-col items-center justify-center"
         onPress={onChatNow}
