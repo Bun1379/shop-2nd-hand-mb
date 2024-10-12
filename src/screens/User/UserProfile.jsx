@@ -16,7 +16,7 @@ function UserProfile({ navigation }) {
       const user = await AsyncStorage.getItem("user");
       if (user !== null) {
         const parsedUser = JSON.parse(user);
-        setUserInfo(parsedUser); // Update the entire userInfo object
+        setUserInfo(parsedUser);
       }
     } catch (error) {
       console.log("Lỗi khi lấy dữ liệu từ AsyncStorage:", error);
@@ -42,7 +42,7 @@ function UserProfile({ navigation }) {
       <View className="bg-white w-full p-6 rounded-xl shadow-md">
         <View className="space-y-3">
           <View className="flex-row justify-between">
-            <Text className="text-lg font-medium text-gray-600">Tên:</Text>
+            <Text className="text-lg font-medium text-gray-600">Họ Tên:</Text>
             <Text className="text-lg text-gray-800">{userInfo.username}</Text>
           </View>
           <View className="flex-row justify-between">
@@ -71,6 +71,13 @@ function UserProfile({ navigation }) {
           onPress={() => navigation.navigate("Cập nhật thông tin", { userInfo })}
         >
           <Text className="text-lg text-white text-center">Cập nhật</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="bg-primary p-3 rounded mt-3"
+          onPress={() => navigation.navigate("Đổi mật khẩu", { userInfo })}
+        >
+          <Text className="text-lg text-white text-center">Đổi mật khẩu</Text>
         </TouchableOpacity>
       </View>
     </View>

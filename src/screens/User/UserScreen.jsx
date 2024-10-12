@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 const UserPage = () => {
   const navigation = useNavigation();
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    email: "",
-    gender: "",
-    address: "",
-    phone: "",
-    image: "",
-  });
+  const [userInfo, setUserInfo] = useState('');
 
   const getUserData = async () => {
     try {
@@ -25,11 +18,45 @@ const UserPage = () => {
       console.log("Lỗi khi lấy dữ liệu từ AsyncStorage:", error);
     }
   };
-  getUserData();
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  // Hàm xử lý đăng xuất
+  const handleLogout = async () => {
+    Alert.alert(
+      "Đăng xuất",
+      "Bạn có chắc chắn muốn đăng xuất?",
+      [
+        {
+          text: "Hủy",
+          style: "cancel"
+        },
+        {
+          text: "Đăng xuất",
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem("user");
+              await AsyncStorage.removeItem("token");
+
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Login" }]
+              });
+            } catch (error) {
+              console.error("Lỗi khi đăng xuất:", error);
+            }
+          }
+        }
+      ]
+    );
+  };
+
   return (
-    <ScrollView className="bg-gray-100">
+    <ScrollView className="bg-gray-100 mt-2 ">
       {/* Thông tin người dùng */}
-      <View className="bg-white p-4 flex-row items-center">
+      <View className="bg-white p-4 flex-row items-center border border-primary">
         <Image
           source={{
             uri: userInfo.image
@@ -68,7 +95,7 @@ const UserPage = () => {
         <TouchableOpacity className="p-4 border-b border-gray-200">
           <Text className="text-base text-primary">Trung tâm hỗ trợ</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="p-4">
+        <TouchableOpacity className="p-4" onPress={handleLogout}>
           <Text className="text-base text-primary">Đăng xuất</Text>
         </TouchableOpacity>
       </View>

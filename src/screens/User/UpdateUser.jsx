@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import UserAPI from "../../API/UserAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -54,10 +55,9 @@ const UpdateUser = ({ route, navigation }) => {
         }
     };
 
-    // Thêm listener cho sự kiện focus khi màn hình quay lại
     useEffect(() => {
         const focusListener = navigation.addListener('focus', () => {
-            // Khi quay lại trang trước, trang đó sẽ được cập nhật thông tin
+
         });
 
         return () => {
@@ -66,31 +66,40 @@ const UpdateUser = ({ route, navigation }) => {
     }, [navigation]);
 
     return (
-        <View className="flex-1 p-4 bg-gray-100">
+        <View className="flex-1 p-4">
+            <Text className="text-lg mb-2 ml-1">Họ Tên</Text>
             <TextInput
-                className="border border-gray-300 rounded-md p-3 mb-4"
+                className="border border-primary rounded-md p-3 mb-4 bg-white"
                 placeholder="Username"
                 value={formData.username}
                 onChangeText={(value) => handleInputChange("username", value)}
             />
 
+            <Text className="text-lg mb-2 ml-1">Số điện thoại</Text>
             <TextInput
-                className="border border-gray-300 rounded-md p-3 mb-4"
+                className="border border-primary rounded-md p-3 mb-4 bg-white"
                 placeholder="Phone"
                 keyboardType="phone-pad"
                 value={formData.phone}
                 onChangeText={(value) => handleInputChange("phone", value)}
             />
 
-            <TextInput
-                className="border border-gray-300 rounded-md p-3 mb-4"
-                placeholder="Gender (MALE, FEMALE, OTHER)"
-                value={formData.gender}
-                onChangeText={(value) => handleInputChange("gender", value)}
-            />
+            <Text className="text-lg mb-2 ml-1">Giới tính</Text>
+            <View className="border border-primary rounded-md mb-4 bg-white">
+                <Picker
+                    selectedValue={formData.gender}
+                    onValueChange={(value) => handleInputChange("gender", value)}
+                >
+                    <Picker.Item label="Chọn giới tính" value="" />
+                    <Picker.Item label="Nam" value="MALE" />
+                    <Picker.Item label="Nữ" value="FEMALE" />
+                    <Picker.Item label="Khác" value="OTHER" />
+                </Picker>
+            </View>
 
+            <Text className="text-lg mb-2 ml-1">Địa chỉ</Text>
             <TextInput
-                className="border border-gray-300 rounded-md p-3 mb-4"
+                className="border border-primary rounded-md p-3 mb-4 bg-white"
                 placeholder="Address"
                 value={formData.address}
                 onChangeText={(value) => handleInputChange("address", value)}

@@ -17,6 +17,7 @@ import Checkout from "./src/screens/Checkout/Checkout";
 import Order from "./src/screens/Order/Order";
 import PurchasedProduct from "./src/screens/Review/PurchasedProduct";
 import AddReview from "./src/screens/Review/AddReview";
+import ChangePassword from "./src/screens/User/ChangePassword";
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -53,6 +54,7 @@ function App() {
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen name="Order" component={Order} />
+        <Stack.Screen name="Đổi mật khẩu" component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );
