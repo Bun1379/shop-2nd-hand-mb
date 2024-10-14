@@ -1,4 +1,5 @@
-import React from "react";
+import { React, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserProfile from "./src/screens/User/UserProfile";
 import Login from "./src/screens/LoginRegister/Login";
 import { NavigationContainer } from "@react-navigation/native";
@@ -21,6 +22,17 @@ import ChangePassword from "./src/screens/User/ChangePassword";
 
 const Stack = createNativeStackNavigator();
 function App() {
+  useEffect(() => {
+    const clearAsyncStorage = async () => {
+      try {
+        await AsyncStorage.clear();
+      } catch (error) {
+        console.error("Lỗi khi xóa AsyncStorage:", error);
+      }
+    };
+    clearAsyncStorage();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">

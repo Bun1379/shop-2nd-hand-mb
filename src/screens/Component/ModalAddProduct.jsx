@@ -42,9 +42,9 @@ const ModalAddProduct = ({
       <Pressable style={{ flex: 1 }} onPress={() => setModalVisible(false)}>
         <View className="flex-1 justify-end">
           <Pressable
-            onPress={() => {}} // Chặn sự kiện nhấn trên modal
+            onPress={() => { }} // Chặn sự kiện nhấn trên modal
           >
-            <View className="bg-white p-5 rounded-t-lg shadow-lg border border-gray-300">
+            <View className="bg-white p-5 rounded-t-lg shadow-lg border border-primary">
               <View className="flex-row items-center justify-between">
                 {/* Ảnh sản phẩm */}
                 <Image
@@ -88,7 +88,7 @@ const ModalAddProduct = ({
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                className="bg-green-500 rounded mt-4 h-10 items-center justify-center"
+                className="bg-primary rounded mt-4 h-10 items-center justify-center"
                 onPress={handleConfirm}
               >
                 <Text className="text-white text-center">Xác nhận</Text>

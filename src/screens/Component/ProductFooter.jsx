@@ -25,7 +25,7 @@ const ProductFooter = ({ onAddToCart, onBuyNow, onChatNow }) => {
         <Text className="text-center text-black">Thêm vào giỏ hàng</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        className="flex-[0.4] bg-green-500 items-center justify-center"
+        className="flex-[0.4] bg-primary items-center justify-center"
         onPress={onBuyNow}
       >
         <Text className="text-center text-white font-bold ">Mua ngay</Text>

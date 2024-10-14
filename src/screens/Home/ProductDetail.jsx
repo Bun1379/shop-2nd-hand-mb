@@ -6,6 +6,7 @@ import ModalAddProduct from "../Component/ModalAddProduct";
 import CartAPI from "../../API/CartAPI";
 import Reviews from "../Review/Reviews";
 import ReviewAPI from "../../API/ReviewAPI";
+import ProductAPI from "../../API/ProductAPI";
 
 const ProductDetail = ({ route, navigation }) => {
   const { product } = route.params;
@@ -13,9 +14,9 @@ const ProductDetail = ({ route, navigation }) => {
   const [quantity, setQuantity] = useState("1");
   const [reviews, setReviews] = useState([]);
   const [viewedProducts, setViewedProducts] = useState([]);
+  const [similarProducts, setSimilarProducts] = useState([]); // State lưu sản phẩm tương tự
 
   const handleConfirm = async () => {
-    console.log(`Đã thêm ${quantity} sản phẩm vào giỏ hàng`);
     let rs = await CartAPI.UpdateQuantity({
       productId: product._id,
       quantity: parseInt(quantity),
@@ -23,7 +24,7 @@ const ProductDetail = ({ route, navigation }) => {
     if (rs.status === 200) {
       alert("Thêm vào giỏ hàng thành công");
     }
-    setModalVisible(false); // Đóng modal sau khi xác nhận
+    setModalVisible(false);
   };
 
   const onAddToCart = () => {
@@ -31,20 +32,28 @@ const ProductDetail = ({ route, navigation }) => {
   };
 
   const onBuyNow = () => {
-    console.log("Buy now");
+    console.log("Mua ngay");
   };
-
-  const onChatNow = () => {
-    console.log("Chat now");
-  };
-
   const fetchDataReviews = async () => {
     try {
       const response = await ReviewAPI.GetReviewByProduct(product._id);
-      const { data } = response;
-      setReviews(data.DT);
+      setReviews(response.data.DT);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu reviews:", error.message);
+    }
+  };
+
+  const fetchSimilarProducts = async () => {
+    try {
+      const response = await ProductAPI.GetProducts({ page: 1, category: product.category._id });
+      const similar = response.data.DT.products;
+
+      // Lọc bỏ sản phẩm hiện tại ra khỏi danh sách sản phẩm tương tự
+      const filteredSimilar = similar.filter((item) => item._id !== product._id);
+
+      setSimilarProducts(filteredSimilar);
+    } catch (error) {
+      console.error("Lỗi khi lấy sản phẩm tương tự:", error);
     }
   };
 
@@ -82,11 +91,12 @@ const ProductDetail = ({ route, navigation }) => {
 
   useEffect(() => {
     fetchDataReviews();
+    fetchSimilarProducts(); // Gọi API sản phẩm tương tự
     saveViewedProduct();
     fetchViewedProducts();
   }, [product]);
 
-  const renderViewedProduct = ({ item }) => (
+  const renderProductItem = ({ item }) => (
     <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", { product: item })}>
       <View className="mr-4">
         <Image
@@ -112,7 +122,7 @@ const ProductDetail = ({ route, navigation }) => {
         {/* Phần nội dung sản phẩm */}
         <Image
           source={{
-            uri: "https://th.bing.com/th/id/OIP.pRbr2XV7L1NEwYpS5noJEQHaHa?rs=1&pid=ImgDetMain",
+            uri: product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/150',
           }}
           className="w-full h-64 rounded-lg mb-4"
           resizeMode="cover"
@@ -143,7 +153,22 @@ const ProductDetail = ({ route, navigation }) => {
             <Text className="text-lg font-bold text-gray-800 mb-4">Sản phẩm đã xem</Text>
             <FlatList
               data={viewedProducts}
-              renderItem={renderViewedProduct}
+              renderItem={renderProductItem}
+              keyExtractor={(item) => item._id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingVertical: 10 }}
+            />
+          </View>
+        )}
+
+        {/* Mục Sản phẩm tương tự */}
+        {similarProducts.length > 0 && (
+          <View className="mt-2 mb-4">
+            <Text className="text-lg font-bold text-gray-800 mb-4">Sản phẩm tương tự</Text>
+            <FlatList
+              data={similarProducts}
+              renderItem={renderProductItem}
               keyExtractor={(item) => item._id}
               horizontal
               showsHorizontalScrollIndicator={false}
