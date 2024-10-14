@@ -42,7 +42,7 @@ const Order = ({ route }) => {
   return (
     <View>
       {/* Order status bar */}
-      <OrderStatusBar status={status} setStatus={setStatus} />
+      <OrderStatusBar status={status} setStatus={setStatus} totalOrder={totalOrder} />
 
       {/* Tổng tiền */}
       <View className="border border-primary rounded-lg pb-2 mt-2 bg-white">
