@@ -1,35 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserScreen from "../User/UserScreen";
 import Home from "./Home";
 import Header from "../Component/Header";
 import Chat from "../Chat/Chat";
 import Notification from "../Notification/Notification";
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
 
 function Navigation({ navigation }) {
+  const [userInfo, setUserInfo] = useState(null);
+
+  const getUserData = async () => {
+    try {
+      const user = await AsyncStorage.getItem("user");
+      if (user !== null) {
+        const parsedUser = JSON.parse(user);
+        setUserInfo(parsedUser);
+      }
+    } catch (error) {
+      console.log("Lỗi khi lấy dữ liệu từ AsyncStorage:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
-          let iconName;
+          let iconComponent;
 
           // Sử dụng icon từ FontAwesome
           if (route.name === "Home") {
-            iconName = "home";
-            // } else if (route.name === 'Notifications') {
-            //     iconName = 'bell';
+            iconComponent = <FontAwesome name="home" size={size} color={color} />;
           } else if (route.name === "Chat") {
-            iconName = "comments";
-          } else if (route.name === "Trang cá nhân") {
-            iconName = "user";
+            iconComponent = <FontAwesome name="comments" size={size} color={color} />;
           } else if (route.name === "Notifications") {
-            iconName = "bell";
+            iconComponent = <FontAwesome name="bell" size={size} color={color} />;
+          } else if (route.name === "Trang cá nhân") {
+            iconComponent = (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={{
+                    uri: userInfo && userInfo.image ? userInfo.image : "https://via.placeholder.com/150",
+                  }}
+                  style={{ width: size * 1.5, height: size * 1.5, borderRadius: size }}
+                />
+              </View>
+            );
           }
 
-          return <FontAwesome name={iconName} size={size} color={color} />;
+          return iconComponent;
         },
         tabBarShowLabel: false,
         tabBarActiveTintColor: "green",
