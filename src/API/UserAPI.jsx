@@ -9,6 +9,10 @@ class UserAPI {
     const url = "/user/info";
     return axiosPrivate.get(url);
   }
+  static async PutUpdateFavorite(productId) {
+    const url = "/user/favorite";
+    return axiosPrivate.put(url, { productId });
+  }
 }
 
 export default UserAPI;

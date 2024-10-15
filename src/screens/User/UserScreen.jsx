@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 const UserPage = () => {
   const navigation = useNavigation();
-  const [userInfo, setUserInfo] = useState('');
+  const [userInfo, setUserInfo] = useState("");
 
   const getUserData = async () => {
     try {
@@ -25,32 +32,28 @@ const UserPage = () => {
 
   // Hàm xử lý đăng xuất
   const handleLogout = async () => {
-    Alert.alert(
-      "Đăng xuất",
-      "Bạn có chắc chắn muốn đăng xuất?",
-      [
-        {
-          text: "Hủy",
-          style: "cancel"
-        },
-        {
-          text: "Đăng xuất",
-          onPress: async () => {
-            try {
-              await AsyncStorage.removeItem("user");
-              await AsyncStorage.removeItem("token");
+    Alert.alert("Đăng xuất", "Bạn có chắc chắn muốn đăng xuất?", [
+      {
+        text: "Hủy",
+        style: "cancel",
+      },
+      {
+        text: "Đăng xuất",
+        onPress: async () => {
+          try {
+            await AsyncStorage.removeItem("user");
+            await AsyncStorage.removeItem("token");
 
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "Login" }]
-              });
-            } catch (error) {
-              console.error("Lỗi khi đăng xuất:", error);
-            }
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Login" }],
+            });
+          } catch (error) {
+            console.error("Lỗi khi đăng xuất:", error);
           }
-        }
-      ]
-    );
+        },
+      },
+    ]);
   };
 
   return (
@@ -91,6 +94,12 @@ const UserPage = () => {
           onPress={() => navigation.navigate("Thông tin cá nhân")}
         >
           <Text className="text-base text-primary">Thông tin cá nhân</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="p-4 border-b border-gray-200"
+          onPress={() => navigation.navigate("Sản phẩm yêu thích")}
+        >
+          <Text className="text-base text-primary">Sản phẩm yêu thích</Text>
         </TouchableOpacity>
         <TouchableOpacity className="p-4 border-b border-gray-200">
           <Text className="text-base text-primary">Trung tâm hỗ trợ</Text>

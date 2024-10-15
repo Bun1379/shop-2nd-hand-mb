@@ -9,7 +9,7 @@ const ReviewItem = ({ review }) => {
         className="w-12 h-12 rounded-full"
         resizeMode="cover"
       />
-      <View className="flex flex-col">
+      <View className="flex flex-col ml-3">
         <Text className="font-semibold">{review.user.username}</Text>
         <Rating imageSize={20} readonly startingValue={review.rating} />
         <Text>{review.comment}</Text>

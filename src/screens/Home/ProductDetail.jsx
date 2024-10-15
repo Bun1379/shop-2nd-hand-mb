@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ProductFooter from "../Component/ProductFooter";
 import ModalAddProduct from "../Component/ModalAddProduct";
@@ -7,6 +14,8 @@ import CartAPI from "../../API/CartAPI";
 import Reviews from "../Review/Reviews";
 import ReviewAPI from "../../API/ReviewAPI";
 import ProductAPI from "../../API/ProductAPI";
+import { Icon } from "react-native-elements";
+import UserAPI from "../../API/UserAPI";
 
 const ProductDetail = ({ route, navigation }) => {
   const { product } = route.params;
@@ -14,17 +23,22 @@ const ProductDetail = ({ route, navigation }) => {
   const [quantity, setQuantity] = useState("1");
   const [reviews, setReviews] = useState([]);
   const [viewedProducts, setViewedProducts] = useState([]);
-  const [similarProducts, setSimilarProducts] = useState([]); // State lưu sản phẩm tương tự
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const [favoriteText, setFavoriteText] = useState("Yêu thích");
 
   const handleConfirm = async () => {
-    let rs = await CartAPI.UpdateQuantity({
-      productId: product._id,
-      quantity: parseInt(quantity),
-    });
-    if (rs.status === 200) {
-      alert("Thêm vào giỏ hàng thành công");
+    try {
+      let rs = await CartAPI.UpdateQuantity({
+        productId: product._id,
+        quantity: parseInt(quantity),
+      });
+      if (rs.status === 200) {
+        alert("Thêm vào giỏ hàng thành công");
+      }
+      setModalVisible(false);
+    } catch (error) {
+      console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error.message);
     }
-    setModalVisible(false);
   };
 
   const onAddToCart = () => {
@@ -45,11 +59,16 @@ const ProductDetail = ({ route, navigation }) => {
 
   const fetchSimilarProducts = async () => {
     try {
-      const response = await ProductAPI.GetProducts({ page: 1, category: product.category._id });
+      const response = await ProductAPI.GetProducts({
+        page: 1,
+        category: product.category._id,
+      });
       const similar = response.data.DT.products;
 
       // Lọc bỏ sản phẩm hiện tại ra khỏi danh sách sản phẩm tương tự
-      const filteredSimilar = similar.filter((item) => item._id !== product._id);
+      const filteredSimilar = similar.filter(
+        (item) => item._id !== product._id
+      );
 
       setSimilarProducts(filteredSimilar);
     } catch (error) {
@@ -69,7 +88,10 @@ const ProductDetail = ({ route, navigation }) => {
           viewedArray.shift();
         }
 
-        await AsyncStorage.setItem("viewedProducts", JSON.stringify(viewedArray));
+        await AsyncStorage.setItem(
+          "viewedProducts",
+          JSON.stringify(viewedArray)
+        );
       }
 
       setViewedProducts(viewedArray);
@@ -89,18 +111,47 @@ const ProductDetail = ({ route, navigation }) => {
     }
   };
 
+  const renderFavorite = async () => {
+    const existingUserData = await UserAPI.GetUserInfo();
+    const favoriteProducts = existingUserData.data.DT.favourites;
+    if (favoriteProducts.some((item) => item._id === product._id)) {
+      setFavoriteText("Đã yêu thích");
+    }
+  };
+
+  const handleFavorite = async () => {
+    try {
+      await UserAPI.PutUpdateFavorite(product._id);
+      if (favoriteText === "Yêu thích") {
+        setFavoriteText("Đã yêu thích");
+      } else {
+        setFavoriteText("Yêu thích");
+      }
+    } catch (error) {
+      console.error("Lỗi:", error.message);
+    }
+  };
+
   useEffect(() => {
     fetchDataReviews();
     fetchSimilarProducts(); // Gọi API sản phẩm tương tự
     saveViewedProduct();
     fetchViewedProducts();
+    renderFavorite();
   }, [product]);
 
   const renderProductItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", { product: item })}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate("ProductDetail", { product: item })}
+    >
       <View className="mr-4">
         <Image
-          source={{ uri: item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/150' }}
+          source={{
+            uri:
+              item.images && item.images.length > 0
+                ? item.images[0]
+                : "https://via.placeholder.com/150",
+          }}
           className="w-32 h-32 rounded-lg"
           resizeMode="cover"
         />
@@ -122,7 +173,10 @@ const ProductDetail = ({ route, navigation }) => {
         {/* Phần nội dung sản phẩm */}
         <Image
           source={{
-            uri: product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/150',
+            uri:
+              product.images && product.images.length > 0
+                ? product.images[0]
+                : "https://via.placeholder.com/150",
           }}
           className="w-full h-64 rounded-lg mb-4"
           resizeMode="cover"
@@ -130,10 +184,19 @@ const ProductDetail = ({ route, navigation }) => {
         <Text className="text-2xl font-bold text-gray-800 mb-2">
           {product.productName}
         </Text>
-        <Text className="text-xl text-red-500 font-semibold mb-4">
+        <Text className="text-xl text-green-500 font-semibold mb-4">
           {product.price} VND
         </Text>
-        <Text className="text-base text-gray-600">{product.description}</Text>
+        <TouchableOpacity
+          className="border-0 rounded-lg bg-green-800 flex items-center w-1/3 flex-row p-3 justify-center"
+          onPress={handleFavorite}
+        >
+          <Icon name="heart" type="font-awesome" color="white" size={20} />
+          <Text className="ml-2 text-white">{favoriteText}</Text>
+        </TouchableOpacity>
+        <Text className="text-base text-gray-600 mt-2">
+          {product.description}
+        </Text>
 
         <View className="border-t-4 border-primary my-4"></View>
 
@@ -150,7 +213,9 @@ const ProductDetail = ({ route, navigation }) => {
         {/* Mục Sản phẩm đã xem */}
         {viewedProducts.length > 0 && (
           <View className="mt-2 mb-4">
-            <Text className="text-lg font-bold text-gray-800 mb-4">Sản phẩm đã xem</Text>
+            <Text className="text-lg font-bold text-gray-800 mb-4">
+              Sản phẩm đã xem
+            </Text>
             <FlatList
               data={viewedProducts}
               renderItem={renderProductItem}
@@ -165,7 +230,9 @@ const ProductDetail = ({ route, navigation }) => {
         {/* Mục Sản phẩm tương tự */}
         {similarProducts.length > 0 && (
           <View className="mt-2 mb-4">
-            <Text className="text-lg font-bold text-gray-800 mb-4">Sản phẩm tương tự</Text>
+            <Text className="text-lg font-bold text-gray-800 mb-4">
+              Sản phẩm tương tự
+            </Text>
             <FlatList
               data={similarProducts}
               renderItem={renderProductItem}
