@@ -27,8 +27,9 @@ const UserPage = () => {
   };
 
   useEffect(() => {
-    getUserData();
-  }, []);
+    const focusListener = navigation.addListener("focus", getUserData);
+    return focusListener;
+  }, [navigation]);
 
   // Hàm xử lý đăng xuất
   const handleLogout = async () => {

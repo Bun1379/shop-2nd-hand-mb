@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from 'expo-image-picker';
+import UploadAPI from "../../API/UploadAPI";
+import UserAPI from "../../API/UserAPI";
 
 function UserProfile({ navigation }) {
   const [userInfo, setUserInfo] = useState({
@@ -11,6 +14,7 @@ function UserProfile({ navigation }) {
     phone: "",
     image: "",
   });
+
   const getUserData = async () => {
     try {
       const user = await AsyncStorage.getItem("user");
@@ -23,22 +27,61 @@ function UserProfile({ navigation }) {
     }
   };
 
+  const handleImagePick = async () => {
+    // Yêu cầu quyền truy cập vào thư viện hình ảnh
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.status !== 'granted') {
+      Alert.alert("Quyền truy cập thư viện hình ảnh không được cấp.");
+      return;
+    }
+
+    // Mở thư viện hình ảnh
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (result.canceled) {
+      console.log("Người dùng đã hủy chọn ảnh");
+    } else {
+      const selectedImage = result.assets[0].uri;
+      try {
+        const response = await fetch(selectedImage);
+        const blob = await response.blob();
+        const Uploadresponse = await UploadAPI.Upload(blob);
+        console.log("Upload avatar response:", Uploadresponse.data);
+        await UserAPI.UpdateUser({ image: Uploadresponse.data.DT });
+
+        setUserInfo((prevUserInfo) => ({
+          ...prevUserInfo,
+          image: selectedImage,
+        }));
+        AsyncStorage.setItem("user", JSON.stringify({ ...userInfo, image: selectedImage }));
+      } catch (error) {
+        console.error('Error uploading avatar:', error.response?.data?.EM || error.message);
+      }
+    }
+  };
+
   useEffect(() => {
     const focusListener = navigation.addListener("focus", getUserData);
-
     return focusListener;
   }, [navigation]);
 
   return (
     <View className="flex-1 justify-center items-center bg-[#F2F7FF] px-10">
-      <View className="justify-center items-center p-5 w-40 h-40 bg-white shadow-lg rounded-full mb-6">
-        <Image
-          source={{
-            uri: userInfo.image ? userInfo.image : 'https://via.placeholder.com/150'
-          }}
-          style={{ width: 160, height: 160, borderRadius: 80 }}
-        />
-      </View>
+      <TouchableOpacity onPress={handleImagePick} className="mb-6">
+        <View className="justify-center items-center p-5 w-40 h-40 bg-white shadow-lg rounded-full">
+          <Image
+            source={{
+              uri: userInfo.image ? userInfo.image : "https://via.placeholder.com/150",
+            }}
+            style={{ width: 160, height: 160, borderRadius: 80 }}
+          />
+        </View>
+      </TouchableOpacity>
       <View className="bg-white w-full p-6 rounded-xl shadow-md">
         <View className="space-y-3">
           <View className="flex-row justify-between">
@@ -50,15 +93,16 @@ function UserProfile({ navigation }) {
             <Text className="text-lg text-gray-800">{userInfo.email}</Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-lg font-medium text-gray-600">
-              Giới tính:
+            <Text className="text-lg font-medium text-gray-600">Giới tính:</Text>
+            <Text className="text-lg text-gray-800">
+              {userInfo.gender === 'MALE' ? 'Nam' :
+                userInfo.gender === 'FEMALE' ? 'Nữ' :
+                  userInfo.gender === 'OTHER' ? 'Khác' :
+                    userInfo.gender}
             </Text>
-            <Text className="text-lg text-gray-800">{userInfo.gender}</Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-lg font-medium text-gray-600">
-              Điện thoại:
-            </Text>
+            <Text className="text-lg font-medium text-gray-600">Điện thoại:</Text>
             <Text className="text-lg text-gray-800">{userInfo.phone}</Text>
           </View>
           <View className="flex-row justify-between">

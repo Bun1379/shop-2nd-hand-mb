@@ -16,6 +16,7 @@ import ReviewAPI from "../../API/ReviewAPI";
 import ProductAPI from "../../API/ProductAPI";
 import { Icon } from "react-native-elements";
 import UserAPI from "../../API/UserAPI";
+import Swiper from "react-native-swiper";
 
 const ProductDetail = ({ route, navigation }) => {
   const { product } = route.params;
@@ -171,16 +172,32 @@ const ProductDetail = ({ route, navigation }) => {
     <>
       <ScrollView className="p-4 bg-white">
         {/* Phần nội dung sản phẩm */}
-        <Image
-          source={{
-            uri:
-              product.images && product.images.length > 0
-                ? product.images[0]
-                : "https://via.placeholder.com/150",
-          }}
-          className="w-full h-64 rounded-lg mb-4"
-          resizeMode="cover"
-        />
+        <Swiper
+          style={{ height: 300 }}
+          showsButtons={true}
+          loop={true}
+          autoplay={true}
+        >
+          {product.images && product.images.length > 0 ? (
+            product.images.map((imageUrl, index) => (
+              <View key={index} className="w-full h-64">
+                <Image
+                  source={{ uri: imageUrl }}
+                  className="w-full h-full rounded-lg"
+                  resizeMode="contain"
+                />
+              </View>
+            ))
+          ) : (
+            <View className="w-full h-64">
+              <Image
+                source={{ uri: "https://via.placeholder.com/150" }}
+                className="w-full h-full rounded-lg"
+                resizeMode="cover"
+              />
+            </View>
+          )}
+        </Swiper>
         <Text className="text-2xl font-bold text-gray-800 mb-2">
           {product.productName}
         </Text>
