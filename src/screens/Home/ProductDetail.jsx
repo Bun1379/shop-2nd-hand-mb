@@ -244,6 +244,9 @@ const ProductDetail = ({ route, navigation }) => {
           </View>
         )}
 
+        <View className="border-t-4 border-primary my-4"></View>
+
+
         {/* Mục Sản phẩm tương tự */}
         {similarProducts.length > 0 && (
           <View className="mt-2 mb-4">
