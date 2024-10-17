@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import UploadAPI from "../../API/UploadAPI";
 import UserAPI from "../../API/UserAPI";
 
@@ -28,14 +28,13 @@ function UserProfile({ navigation }) {
   };
 
   const handleImagePick = async () => {
-    // Yêu cầu quyền truy cập vào thư viện hình ảnh
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.status !== 'granted') {
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.status !== "granted") {
       Alert.alert("Quyền truy cập thư viện hình ảnh không được cấp.");
       return;
     }
 
-    // Mở thư viện hình ảnh
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -43,25 +42,43 @@ function UserProfile({ navigation }) {
       quality: 1,
     });
 
-    if (result.canceled) {
-      console.log("Người dùng đã hủy chọn ảnh");
-    } else {
+    if (!result.canceled) {
       const selectedImage = result.assets[0].uri;
+
       try {
+        // Lấy blob từ ảnh
         const response = await fetch(selectedImage);
         const blob = await response.blob();
-        const Uploadresponse = await UploadAPI.Upload(blob);
-        console.log("Upload avatar response:", Uploadresponse.data);
-        await UserAPI.UpdateUser({ image: Uploadresponse.data.DT });
+
+        // Tạo đối tượng FormData
+        const formData = new FormData();
+        formData.append("image", {
+          uri: selectedImage, // URI của ảnh
+          name: "photo.jpg", // Tên file (tuỳ chọn, nên đặt)
+          type: blob.type || "image/jpeg", // Định dạng mime type
+        });
+
+        // Gọi API để upload ảnh
+        const uploadResponse = await UploadAPI.Upload(formData);
+
+        await UserAPI.UpdateUser({ image: uploadResponse.data.DT });
 
         setUserInfo((prevUserInfo) => ({
           ...prevUserInfo,
           image: selectedImage,
         }));
-        AsyncStorage.setItem("user", JSON.stringify({ ...userInfo, image: selectedImage }));
+        AsyncStorage.setItem(
+          "user",
+          JSON.stringify({ ...userInfo, image: selectedImage })
+        );
       } catch (error) {
-        console.error('Error uploading avatar:', error.response?.data?.EM || error.message);
+        console.error(
+          "Error uploading avatar:",
+          error.response?.data?.EM || error.message
+        );
       }
+    } else {
+      console.log("Người dùng đã hủy chọn ảnh");
     }
   };
 
@@ -76,7 +93,9 @@ function UserProfile({ navigation }) {
         <View className="justify-center items-center p-5 w-40 h-40 bg-white shadow-lg rounded-full">
           <Image
             source={{
-              uri: userInfo.image ? userInfo.image : "https://via.placeholder.com/150",
+              uri: userInfo.image
+                ? userInfo.image
+                : "https://via.placeholder.com/150",
             }}
             style={{ width: 160, height: 160, borderRadius: 80 }}
           />
@@ -93,16 +112,23 @@ function UserProfile({ navigation }) {
             <Text className="text-lg text-gray-800">{userInfo.email}</Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-lg font-medium text-gray-600">Giới tính:</Text>
+            <Text className="text-lg font-medium text-gray-600">
+              Giới tính:
+            </Text>
             <Text className="text-lg text-gray-800">
-              {userInfo.gender === 'MALE' ? 'Nam' :
-                userInfo.gender === 'FEMALE' ? 'Nữ' :
-                  userInfo.gender === 'OTHER' ? 'Khác' :
-                    userInfo.gender}
+              {userInfo.gender === "MALE"
+                ? "Nam"
+                : userInfo.gender === "FEMALE"
+                ? "Nữ"
+                : userInfo.gender === "OTHER"
+                ? "Khác"
+                : userInfo.gender}
             </Text>
           </View>
           <View className="flex-row justify-between">
-            <Text className="text-lg font-medium text-gray-600">Điện thoại:</Text>
+            <Text className="text-lg font-medium text-gray-600">
+              Điện thoại:
+            </Text>
             <Text className="text-lg text-gray-800">{userInfo.phone}</Text>
           </View>
           <View className="flex-row justify-between">
@@ -112,7 +138,9 @@ function UserProfile({ navigation }) {
         </View>
         <TouchableOpacity
           className="bg-primary p-3 rounded mt-6"
-          onPress={() => navigation.navigate("Cập nhật thông tin", { userInfo })}
+          onPress={() =>
+            navigation.navigate("Cập nhật thông tin", { userInfo })
+          }
         >
           <Text className="text-lg text-white text-center">Cập nhật</Text>
         </TouchableOpacity>
