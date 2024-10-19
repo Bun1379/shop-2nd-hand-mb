@@ -26,8 +26,9 @@ function Navigation({ navigation }) {
   };
 
   useEffect(() => {
-    getUserData();
-  }, []);
+    const focusListener = navigation.addListener("focus", getUserData);
+    return focusListener;
+  }, [navigation]);
 
   return (
     <Tab.Navigator
