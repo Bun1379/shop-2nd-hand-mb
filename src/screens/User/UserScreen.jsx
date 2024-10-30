@@ -98,6 +98,12 @@ const UserPage = () => {
         </TouchableOpacity>
         <TouchableOpacity
           className="p-4 border-b border-gray-200"
+          onPress={() => navigation.navigate("Mã giảm giá")}
+        >
+          <Text className="text-base text-primary">Mã giảm giá của tôi</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="p-4 border-b border-gray-200"
           onPress={() => navigation.navigate("Sản phẩm yêu thích")}
         >
           <Text className="text-base text-primary">Sản phẩm yêu thích</Text>

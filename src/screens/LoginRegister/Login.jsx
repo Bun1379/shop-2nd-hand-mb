@@ -20,7 +20,7 @@ function Login({ navigation }) {
         password,
       });
 
-      if (response.data.EM === "Login successfully") {
+      if (response.data.EM === "Đăng nhập thành công") {
         await AsyncStorage.setItem("token", response.data.DT.token);
         await AsyncStorage.setItem(
           "user",

@@ -5,7 +5,11 @@ const ReviewItem = ({ review }) => {
   return (
     <View className="flex flex-row my-2">
       <Image
-        source={{ uri: review.user.image }}
+        source={{
+          uri: review.user.image
+            ? review.user.image
+            : "https://via.placeholder.com/150",
+        }}
         className="w-12 h-12 rounded-full"
         resizeMode="cover"
       />
