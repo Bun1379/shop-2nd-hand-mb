@@ -34,12 +34,10 @@ function Login({ navigation }) {
           navigation.navigate("Navigation");
         }
       } else {
-        Alert.alert("Đăng nhập thất bại", response.data.message);
-        console.error("Chi tiết lỗi:", response.data.message);
+        Alert.alert("Đăng nhập thất bại", response.data.message.EM);
       }
     } catch (error) {
-      console.error("Chi tiết lỗi:", error.message);
-      Alert.alert("Lỗi", error.message || "Đã xảy ra lỗi");
+      Alert.alert("Lỗi: ", error || "Đã xảy ra lỗi");
     }
   };
 

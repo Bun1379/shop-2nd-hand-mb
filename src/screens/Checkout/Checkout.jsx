@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import CartFooter from "../Component/CartFooter";
 import OrderAPI from "../../API/OrderAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AddressAPI from "../../API/AddressAPI";
 
 const Checkout = ({ route }) => {
   const navigation = useNavigation();
@@ -15,17 +16,38 @@ const Checkout = ({ route }) => {
     address: '',
   });
   const [total, setTotal] = useState(0);
-  const [isModalVisible, setIsModalVisible] = useState(false); // State để quản lý modal
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [addresses, setAddresses] = useState([]); // State để lưu danh sách địa chỉ
+  const [selectedAddress, setSelectedAddress] = useState(null); // State để lưu địa chỉ đang chọn
 
   const fetchDataUser = async () => {
     try {
       const user = await AsyncStorage.getItem("user");
       if (user !== null) {
         const parsedUser = JSON.parse(user);
-        setUserInfo(parsedUser);  // Update the entire userInfo object
+        setUserInfo(parsedUser);
+        setSelectedAddress(parsedUser.address); // Cập nhật địa chỉ mặc định
       }
     } catch (error) {
       console.log('Lỗi khi lấy dữ liệu từ AsyncStorage:', error);
+    }
+  };
+
+  const fetchAddresses = async () => {
+    try {
+      const response = await AddressAPI.GetAddressByUser();
+      if (response.status === 200) {
+        const addresses = response.data.DT;
+        setAddresses(addresses);
+        const defaultAddress = addresses.find(
+          (address) => address.isDefault === true
+        );
+        if (defaultAddress) {
+          setSelectedAddress(defaultAddress);
+        }
+      }
+    } catch (error) {
+      alert("Lỗi: " + error.response.data.EM);
     }
   };
 
@@ -36,9 +58,9 @@ const Checkout = ({ route }) => {
         quantity: item.quantity,
       })),
       totalAmount: totalDiscount,
-      address: userInfo.address,
-      phone: userInfo.phone,
-      name: userInfo.username,
+      address: `${selectedAddress.address}, ${selectedAddress.district}, ${selectedAddress.ward}, ${selectedAddress.city}`,
+      phone: selectedAddress.phone,
+      name: selectedAddress.name,
       discountCode: discountCode,
       paymentMethod: selectedPaymentMethod,
     };
@@ -54,6 +76,7 @@ const Checkout = ({ route }) => {
 
   useEffect(() => {
     fetchDataUser();
+    fetchAddresses(); // Lấy danh sách địa chỉ
   }, []);
 
   useEffect(() => {
@@ -63,6 +86,27 @@ const Checkout = ({ route }) => {
     });
     setTotal(total);
   }, [items]);
+
+  const renderAddress = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        setSelectedAddress(item);
+        setIsModalVisible(false);
+      }}
+      className="p-4 border-b border-gray-200 bg-white border border-primary rounded-lg"
+    >
+      {item.isDefault && (
+        <Text className="absolute top-5 right-5 bg-red-500 text-white px-2 py-1 rounded-full text-xs">
+          Mặc định
+        </Text>
+      )}
+      <Text className="text-lg font-bold">{item.name}</Text>
+      <Text className="text-gray-700 mt-1">Số điện thoại: {item.phone}</Text>
+      <Text className="text-gray-700">
+        Địa chỉ: {item.address}, {item.district}, {item.ward}, {item.city}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View className="flex-1">
@@ -79,62 +123,43 @@ const Checkout = ({ route }) => {
                 <Text className="text-blue-500">Thay đổi</Text>
               </TouchableOpacity>
             </View>
-            <View>
-              <Text>Tên: {userInfo.username}</Text>
-              <Text>SĐT: {userInfo.phone}</Text>
-              <Text>Địa chỉ: {userInfo.address}</Text>
-            </View>
+            {selectedAddress && (
+              <View>
+                <Text>Tên: {selectedAddress.name}</Text>
+                <Text>SĐT: {selectedAddress.phone} </Text>
+                <Text>Địa chỉ: {selectedAddress.address},{" "}
+                  {selectedAddress.district}, {selectedAddress.ward},{" "}
+                  {selectedAddress.city} </Text>
+              </View>
+            )}
           </View>
         )}
       />
 
       <CartFooter total={total} onCheckout={handleCheckout} />
 
-      {/* Modal form chỉnh sửa thông tin */}
+      {/* Modal chọn địa chỉ */}
       <Modal
         visible={isModalVisible}
         transparent={true}
         animationType="slide"
         onRequestClose={() => setIsModalVisible(false)}
       >
-        <View className="flex-1 justify-center items-center bg-black bg-opacity-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
           <View className="w-4/5 bg-white p-6 rounded-lg">
-            <Text className="text-lg font-bold mb-4">Chỉnh sửa thông tin người nhận</Text>
-
-            <TextInput
-              placeholder="Tên"
-              value={userInfo.username}
-              onChangeText={(text) => setUserInfo({ ...userInfo, username: text })}
-              className="border border-gray-300 p-2 rounded-lg mb-3 bg-white"
-            />
-            <TextInput
-              placeholder="Số điện thoại"
-              value={userInfo.phone}
-              onChangeText={(text) => setUserInfo({ ...userInfo, phone: text })}
-              className="border border-gray-300 p-2 rounded-lg mb-3 bg-white"
-            />
-            <TextInput
-              placeholder="Địa chỉ"
-              value={userInfo.address}
-              onChangeText={(text) => setUserInfo({ ...userInfo, address: text })}
-              className="border border-gray-300 p-2 rounded-lg mb-3 bg-white"
+            <Text className="text-lg font-bold mb-4">Chọn địa chỉ giao hàng</Text>
+            <FlatList
+              data={addresses}
+              keyExtractor={(item) => item._id}
+              renderItem={renderAddress}
             />
 
-            <View className="flex-row justify-between mt-4">
-              <TouchableOpacity
-                onPress={() => setIsModalVisible(false)}
-                className="bg-green-500 p-3 rounded-lg w-2/5"
-              >
-                <Text className="text-white text-center font-semibold">Lưu</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => setIsModalVisible(false)}
-                className="bg-red-500 p-3 rounded-lg w-2/5"
-              >
-                <Text className="text-white text-center font-semibold">Hủy</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => setIsModalVisible(false)}
+              className="bg-red-500 p-3 rounded-lg mt-4"
+            >
+              <Text className="text-white text-center font-semibold">Đóng</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

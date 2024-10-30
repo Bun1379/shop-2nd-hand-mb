@@ -108,8 +108,11 @@ const UserPage = () => {
         >
           <Text className="text-base text-primary">Sản phẩm yêu thích</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="p-4 border-b border-gray-200">
-          <Text className="text-base text-primary">Trung tâm hỗ trợ</Text>
+        <TouchableOpacity
+          className="p-4 border-b border-gray-200"
+          onPress={() => navigation.navigate("Sổ địa chỉ")}
+        >
+          <Text className="text-base text-primary">Sổ địa chỉ</Text>
         </TouchableOpacity>
         <TouchableOpacity className="p-4" onPress={handleLogout}>
           <Text className="text-base text-primary">Đăng xuất</Text>

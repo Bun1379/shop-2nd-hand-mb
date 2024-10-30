@@ -17,7 +17,6 @@ const CartFooter = ({ total, onCheckout }) => {
       const rs = await DiscountAPI.getDiscountByCode(code);
       setDiscountCode(rs.data.DT._id);
       setDiscount(rs.data.DT.discountPercentage);
-      setTotalDiscount(total - (total * rs.data.DT.discountPercentage) / 100);
       alert("Mã giảm giá hợp lệ");
     } catch (error) {
       alert(error.response?.data?.EM);
@@ -44,13 +43,17 @@ const CartFooter = ({ total, onCheckout }) => {
         );
       }
     } catch (error) {
-      toast.error(error.response.data.EM);
+      alert(error.response.data.EM);
     }
   };
 
   useEffect(() => {
     fetchListDiscount();
   }, []);
+
+  useEffect(() => {
+    setTotalDiscount(total - (total * discount) / 100);
+  }, [discount, total]);
 
   return (
     <View className="bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
@@ -67,13 +70,13 @@ const CartFooter = ({ total, onCheckout }) => {
         </View>
       </View>
       <View className="flex-row justify-between items-center mb-4">
-        <Text className="text-lg font-semibold">Nhập mã giảm giá:</Text>
+        <Text className="text-lg font-semibold">Chọn mã giảm giá:</Text>
         <View className="border border-gray-200 rounded-lg">
           <Picker
             selectedValue={selectedDiscount}
             onValueChange={(itemValue) => {
-              setSelectedDiscount(itemValue);
               CheckDiscountCode(itemValue);
+              setSelectedDiscount(itemValue);
             }}
             style={{ height: 50, width: 150 }}
           >
