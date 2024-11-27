@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import OrderAPI from "../../API/OrderAPI";
-import { FlatList, View } from "react-native";
+import { FlatList, View, Text } from "react-native";
 import PurchasedProductItem from "./PurchasedProductItem";
 
 const PurchasedProduct = () => {
@@ -16,17 +17,26 @@ const PurchasedProduct = () => {
     }
   };
 
-  useEffect(() => {
-    fetchDataProducts();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchDataProducts();
+    }, [])
+  );
+
   return (
-    <View>
-      <FlatList
-        data={products}
-        renderItem={({ item }) => <PurchasedProductItem product={item} />}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={{ paddingBottom: 80, paddingTop: 10 }}
-      />
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      {products.length === 0 ? (
+        <Text style={{ fontSize: 16, color: "gray" }}>
+          Bạn không còn sản phẩm chưa đánh giá.
+        </Text>
+      ) : (
+        <FlatList
+          data={products}
+          renderItem={({ item }) => <PurchasedProductItem product={item} />}
+          keyExtractor={(item) => item._id}
+          contentContainerStyle={{ paddingBottom: 80, paddingTop: 10 }}
+        />
+      )}
     </View>
   );
 };

@@ -4,7 +4,7 @@ import OrderAPI from "../../API/OrderAPI";
 import { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 
-const Order = ({ route }) => {
+const Order = ({ route, navigation }) => {
   const { initStatus } = route.params;
 
   const [listOrder, setListOrder] = useState([]);
@@ -38,6 +38,14 @@ const Order = ({ route }) => {
       filterOrder();
     }
   }, [status, totalOrder]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+      navigation.navigate('Trang cá nhân');
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View>
