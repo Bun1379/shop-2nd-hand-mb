@@ -16,17 +16,13 @@ function Signup({ navigation }) {
                 email,
                 password,
             });
-            if (response.data.EM === "Create user successfully") {
-                Alert.alert('Đăng ký thành công!');
-                await AuthorAPI.SendOTP({
-                    email,
-                });
-                navigation.navigate('VerifyUser', { email });
-            } else {
-                Alert.alert('Đăng ký thất bại', response.data.message);
-            }
+            Alert.alert('Đăng ký thành công!');
+            await AuthorAPI.SendOTP({
+                email,
+            });
+            navigation.navigate('VerifyUser', { email });
         } catch (error) {
-            Alert.alert('Lỗi', error.message || 'Đã xảy ra lỗi');
+            Alert.alert('Lỗi', error.response.data.EM);
         }
     };
 

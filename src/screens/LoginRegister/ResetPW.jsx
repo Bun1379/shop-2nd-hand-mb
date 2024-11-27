@@ -18,12 +18,8 @@ function ResetPW({ navigation, route }) {
                 otp,
                 newPassword
             });
-            if (response.data.EM === "Reset password successfully") {
-                Alert.alert('Reset mật khẩu thành công!');
-                navigation.navigate('Login'); // Chuyển đến màn hình Login
-            } else {
-                Alert.alert('Lỗi:', response.data.message);
-            }
+            Alert.alert('Reset mật khẩu thành công!');
+            navigation.navigate('Login'); // Chuyển đến màn hình Login
         } catch (error) {
             Alert.alert('Lỗi', error.message || 'Đã xảy ra lỗi');
             console.error(error); // Log lỗi để giúp gỡ lỗi dễ hơn

@@ -14,11 +14,7 @@ function ForgotPW({ navigation }) {
             const response = await AuthorAPI.SendOTP({ // Sử dụng endpoint API
                 email
             });
-            if (response.data.EM === "OTP sent") {
-                navigation.navigate('ResetPW', { email }); // Chuyển đến màn hình resetPW
-            } else {
-                Alert.alert('Lỗi:', response.data.message);
-            }
+            navigation.navigate('ResetPW', { email }); // Chuyển đến màn hình resetPW
         } catch (error) {
             Alert.alert('Lỗi', error.message || 'Đã xảy ra lỗi');
         }
