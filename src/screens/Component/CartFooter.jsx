@@ -82,7 +82,11 @@ const CartFooter = ({ total, onCheckout }) => {
           >
             {listDiscount.length > 0 &&
               listDiscount.map((discount) => (
-                <Picker.Item label={discount.label} value={discount.value} />
+                <Picker.Item
+                  key={discount.value}
+                  label={discount.label}
+                  value={discount.value}
+                />
               ))}
           </Picker>
         </View>

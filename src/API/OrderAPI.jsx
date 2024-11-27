@@ -11,6 +11,11 @@ class OrderAPI {
     return axiosPrivate.post(url, data);
   }
 
+  static async GetOrderById(orderId) {
+    const url = `/order/${orderId}`;
+    return axiosPrivate.get(url);
+  }
+
   static async GetProductPurchased() {
     const url = "/order/product-purchased";
     return axiosPrivate.get(url);

@@ -8,7 +8,7 @@ import Home from "./Home";
 import Header from "../Component/Header";
 import Chat from "../Chat/Chat";
 import Notification from "../Notification/Notification";
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { View, Image } from "react-native";
 
 function Navigation({ navigation }) {
   const [userInfo, setUserInfo] = useState(null);
@@ -38,19 +38,28 @@ function Navigation({ navigation }) {
 
           // Sử dụng icon từ FontAwesome
           if (route.name === "Home") {
-            iconComponent = <FontAwesome name="home" size={size} color={color} />;
-          } else if (route.name === "Chat") {
-            iconComponent = <FontAwesome name="comments" size={size} color={color} />;
+            iconComponent = (
+              <FontAwesome name="home" size={size} color={color} />
+            );
           } else if (route.name === "Notifications") {
-            iconComponent = <FontAwesome name="bell" size={size} color={color} />;
+            iconComponent = (
+              <FontAwesome name="bell" size={size} color={color} />
+            );
           } else if (route.name === "Trang cá nhân") {
             iconComponent = (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image
                   source={{
-                    uri: userInfo && userInfo.image ? userInfo.image : "https://via.placeholder.com/150",
+                    uri:
+                      userInfo && userInfo.image
+                        ? userInfo.image
+                        : "https://via.placeholder.com/150",
                   }}
-                  style={{ width: size * 1.5, height: size * 1.5, borderRadius: size }}
+                  style={{
+                    width: size * 1.5,
+                    height: size * 1.5,
+                    borderRadius: size,
+                  }}
                 />
               </View>
             );
@@ -73,7 +82,6 @@ function Navigation({ navigation }) {
           },
         }}
       />
-      <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen name="Notifications" component={Notification} />
       <Tab.Screen name="Trang cá nhân" component={UserScreen} />
     </Tab.Navigator>
