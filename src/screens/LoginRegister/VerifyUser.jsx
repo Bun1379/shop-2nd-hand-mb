@@ -13,8 +13,8 @@ function VerifyUser({ navigation, route }) {
             alert(response.data.EM);
             navigation.navigate("Login");
         } catch (error) {
-            Alert.alert('Lỗi', 'Có lỗi xảy ra khi xác thực OTP.');
-            console.log('Error:', error);
+            Alert.alert('Lỗi', error.response.data.EM);
+            console.log('Error:', error.response.data.EM);
         }
     };
     return (

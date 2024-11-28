@@ -16,7 +16,7 @@ function ForgotPW({ navigation }) {
             });
             navigation.navigate('ResetPW', { email }); // Chuyển đến màn hình resetPW
         } catch (error) {
-            Alert.alert('Lỗi', error.message || 'Đã xảy ra lỗi');
+            Alert.alert('Lỗi', error.response.data.EM || 'Đã xảy ra lỗi');
         }
     };
 

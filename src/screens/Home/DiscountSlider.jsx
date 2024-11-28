@@ -61,7 +61,7 @@ const DiscountSlider = () => {
       ToastAndroid.show(response.data.EM, ToastAndroid.SHORT);
       fetchUserDiscounts();
     } catch (error) {
-      Alert.alert("Error", error.message);
+      Alert.alert("Error", error.response.data.EM);
     }
   };
 

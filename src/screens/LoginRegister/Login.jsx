@@ -37,7 +37,7 @@ function Login({ navigation }) {
         Alert.alert("Đăng nhập thất bại", response.data.message.EM);
       }
     } catch (error) {
-      Alert.alert("Lỗi: ", error.message || "Đã xảy ra lỗi");
+      Alert.alert("Lỗi: ", error.response.data.EM || "Đã xảy ra lỗi");
     }
   };
 

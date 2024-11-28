@@ -21,7 +21,7 @@ function ResetPW({ navigation, route }) {
             Alert.alert('Reset mật khẩu thành công!');
             navigation.navigate('Login'); // Chuyển đến màn hình Login
         } catch (error) {
-            Alert.alert('Lỗi', error.message || 'Đã xảy ra lỗi');
+            Alert.alert('Lỗi', error.response.data.EM || 'Đã xảy ra lỗi');
             console.error(error); // Log lỗi để giúp gỡ lỗi dễ hơn
         }
     };

@@ -49,7 +49,7 @@ const UpdateUser = ({ route, navigation }) => {
                 navigation.goBack();
             }
         } catch (error) {
-            Alert.alert("Lỗi:", error.message);
+            Alert.alert("Lỗi:", error.response.data.EM);
         } finally {
             setLoading(false);
         }
