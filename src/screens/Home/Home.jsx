@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import Item from "../Component/Item";
 import ProductAPI from "../../API/ProductAPI";
+import DiscountSlider from "./DiscountSlider";
 
 const Home = () => {
   const [arrayProducts, setArrayProducts] = useState([]);
@@ -40,6 +41,7 @@ const Home = () => {
 
   return (
     <View>
+      <DiscountSlider />
       {arrayProducts && arrayProducts.length > 0 ? (
         <FlatList
           key={`numColumns-2`}
