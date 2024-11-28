@@ -8,19 +8,15 @@ const ChangePassword = ({ route, navigation }) => {
 
     const handleSubmit = async () => {
         try {
-            const response = await AuthorAPI.VerifyPassword({
+            await AuthorAPI.VerifyPassword({
                 email: userInfo.email,
                 password: password,
             });
-            if (response.data.EM === "Password is correct") {
-                alert("Mật khẩu chính xác, vui lòng đợi trong giây lát");
-                const response = await AuthorAPI.SendOTP({
-                    email: userInfo.email
-                });
-                if (response.data.EM === "OTP sent") {
-                    navigation.navigate('ResetPW', { email: userInfo.email });
-                }
-            }
+            alert("Mật khẩu chính xác, vui lòng đợi trong giây lát");
+            await AuthorAPI.SendOTP({
+                email: userInfo.email
+            });
+            navigation.navigate('ResetPW', { email: userInfo.email });
         }
         catch (error) {
             console.error("Lỗi: ", error);
