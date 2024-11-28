@@ -93,18 +93,18 @@ const CartFooter = ({ total, onCheckout }) => {
       </View>
       <View className="flex-row justify-between items-center mb-4">
         <Text className="text-lg font-semibold">Tổng cộng:</Text>
-        <Text className="text-lg font-semibold text-red-500">{total} VND</Text>
+        <Text className="text-lg font-semibold text-red-500">{total.toLocaleString('vi-VN')} VND</Text>
       </View>
       <View className="flex-row justify-between items-center mb-4">
         <Text className="text-lg font-semibold">Giảm giá:</Text>
         <Text className="text-lg font-semibold">
-          ({discount}%) -{(total * discount) / 100} VND
+          ({discount}%) -{((total * discount) / 100).toLocaleString('vi-VN')} VND
         </Text>
       </View>
       <View className="flex-row justify-between items-center mb-4">
         <Text className="text-lg font-semibold">Tổng thanh toán:</Text>
         <Text className="text-lg font-semibold text-red-500">
-          {totalDiscount} VND
+          {totalDiscount.toLocaleString('vi-VN')} VND
         </Text>
       </View>
       <TouchableOpacity

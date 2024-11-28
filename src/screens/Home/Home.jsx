@@ -41,9 +41,11 @@ const Home = () => {
 
   return (
     <View>
-      <DiscountSlider />
       {arrayProducts && arrayProducts.length > 0 ? (
         <FlatList
+          ListHeaderComponent={
+            <DiscountSlider />
+          }
           key={`numColumns-2`}
           data={arrayProducts}
           renderItem={({ item }) => <Item product={item} />}

@@ -15,7 +15,7 @@ const OrderItem = ({ order }) => {
         </Text>
 
         <Text className="text-lg text-gray-600 mt-2">
-          Tổng giá: {order.totalAmount} VND
+          Tổng giá: {order.totalAmount.toLocaleString('vi-VN')} VND
         </Text>
 
         <Text className="text-md text-gray-600 mt-2">

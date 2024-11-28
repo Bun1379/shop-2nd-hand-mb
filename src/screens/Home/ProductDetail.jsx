@@ -202,7 +202,7 @@ const ProductDetail = ({ route, navigation }) => {
           {product.productName}
         </Text>
         <Text className="text-xl text-green-500 font-semibold mb-4">
-          {product.price} VND
+          {product.price.toLocaleString('vi-VN')} VND
         </Text>
         <TouchableOpacity
           className="border-0 rounded-lg bg-green-800 flex items-center w-1/3 flex-row p-3 justify-center"

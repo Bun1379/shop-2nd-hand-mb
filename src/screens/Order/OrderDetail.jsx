@@ -38,14 +38,23 @@ const OrderDetail = ({ route }) => {
               <Text className="text-lg font-bold">
                 Mã đơn hàng: {orderDetail._id}
               </Text>
-              <Text className="text-lg text-gray-600">
-                Tổng tiền: {orderDetail.totalAmount} VNĐ
+              <Text className="text-lg text-primary font-bold">
+                Tổng tiền: {orderDetail.totalAmount.toLocaleString('vi-VN')} VNĐ
               </Text>
               <Text className="text-lg text-gray-600">
                 Trạng thái: {orderDetail.status}
               </Text>
               <Text className="text-lg text-gray-600">
+                Người nhận: {orderDetail.name}
+              </Text>
+              <Text className="text-lg text-gray-600">
+                Số điện thoại: {orderDetail.phone}
+              </Text>
+              <Text className="text-lg text-gray-600">
                 Địa chỉ: {orderDetail.address}
+              </Text>
+              <Text className="text-lg text-gray-600">
+                Ngày tạo: {new Date(orderDetail.createdAt).toLocaleDateString('vi-VN')}
               </Text>
             </View>
           }
@@ -62,7 +71,7 @@ const OrderDetail = ({ route }) => {
                   {item.product.productName}
                 </Text>
                 <Text className="text-sm text-gray-500">
-                  {item.product.price} VNĐ x {item.quantity}
+                  {item.product.price.toLocaleString('vi-VN')} VNĐ x {item.quantity}
                 </Text>
               </View>
             </View>

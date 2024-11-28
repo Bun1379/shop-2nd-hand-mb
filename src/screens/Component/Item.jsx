@@ -28,7 +28,7 @@ const Item = ({ product }) => {
         </Text>
         {/* Giá sản phẩm */}
         <Text className="text-sm text-right text-gray-500 mt-1">
-          {product.price} VND
+          {product.price.toLocaleString('vi-VN')} VND
         </Text>
       </View>
     </TouchableOpacity>

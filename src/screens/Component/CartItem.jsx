@@ -64,7 +64,7 @@ const CartItem = React.memo(
             className="w-24 h-24 rounded-lg"
             resizeMode="cover"
           />
-          <Text className="text-lg font-semibold ml-4">${totalPrice}</Text>
+          <Text className="text-lg font-semibold ml-4">{totalPrice.toLocaleString('vi-VN')} VND</Text>
 
           <View className="flex-1 ml-4">
             <Text className="text-lg font-semibold">{productName}</Text>

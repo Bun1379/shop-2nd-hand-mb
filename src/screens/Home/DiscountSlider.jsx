@@ -71,11 +71,11 @@ const DiscountSlider = () => {
   }, []);
 
   const renderDiscount = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.title}>Mã: {item.discountCode}</Text>
-      <Text style={styles.text}>Giảm: {item.discountPercentage}%</Text>
+    <View className="w-24 mx-2 p-3 bg-gray-100 rounded-lg border border-gray-300">
+      <Text className="text-lg font-bold">Mã: {item.discountCode}</Text>
+      <Text className="text-base my-2">Giảm: {item.discountPercentage}%</Text>
       {userDiscounts.find((userDiscount) => userDiscount._id === item._id) ? (
-        <Text style={styles.receivedText}>Đã nhận</Text>
+        <Text className="text-red-500 text-base font-bold">Đã nhận</Text>
       ) : (
         <Button
           title="Lưu"
@@ -87,11 +87,11 @@ const DiscountSlider = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Discounts</Text>
-      <View style={styles.navigation}>
+    <View className="flex-1 bg-white mb-5">
+      <Text className="text-2xl text-center mb-4">Discounts</Text>
+      <View className="flex-row items-center justify-between mb-4">
         <TouchableOpacity onPress={handlePrev}>
-          <Text style={styles.navButton}>{"<"}</Text>
+          <Text className="text-2xl px-2 text-blue-500">{"<"}</Text>
         </TouchableOpacity>
         <FlatList
           data={groupedDiscounts[currentIndex]}
@@ -101,56 +101,12 @@ const DiscountSlider = () => {
           showsHorizontalScrollIndicator={false}
         />
         <TouchableOpacity onPress={handleNext}>
-          <Text style={styles.navButton}>{">"}</Text>
+          <Text className="text-2xl px-2 text-blue-500">{">"}</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
-};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  heading: {
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 16,
-  },
-  navigation: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  navButton: {
-    fontSize: 24,
-    paddingHorizontal: 16,
-    color: "#007bff",
-  },
-  card: {
-    width: 200,
-    marginHorizontal: 8,
-    padding: 16,
-    backgroundColor: "#f8f9fa",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  text: {
-    fontSize: 16,
-    marginVertical: 8,
-  },
-  receivedText: {
-    color: "red",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
+};
 
 export default DiscountSlider;

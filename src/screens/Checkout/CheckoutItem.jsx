@@ -19,14 +19,14 @@ const CheckoutItem = ({ item }) => {
             <Text className="text-lg font-semibold">
               {item.product.productName}
             </Text>
-            <Text className="text-gray-600">Giá: {item.product.price} VND</Text>
+            <Text className="text-gray-600">Giá: {item.product.price.toLocaleString('vi-VN')} VND</Text>
             <Text className="text-gray-600">Số lượng: {item.quantity}</Text>
           </View>
         </View>
 
         <View className="border-t border-gray-200 pt-2">
           <Text className="text-right text-lg font-semibold">
-            Tổng tiền: {item.price} VND
+            Tổng tiền: {item.price.toLocaleString('vi-VN')} VND
           </Text>
         </View>
       </View>
